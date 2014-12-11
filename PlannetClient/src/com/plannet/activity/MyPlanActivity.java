@@ -32,7 +32,8 @@ public class MyPlanActivity extends ActionBarActivity implements NavigationDrawe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_plan);
 
-		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
+				R.id.navigation_drawer);
 		mTitle = getTitle();
 
 		// Set up the drawer.
@@ -43,7 +44,8 @@ public class MyPlanActivity extends ActionBarActivity implements NavigationDrawe
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
+		fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+				.commit();
 	}
 
 	public void onSectionAttached(int number) {

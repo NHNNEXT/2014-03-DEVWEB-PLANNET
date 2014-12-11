@@ -1,11 +1,11 @@
 package com.plannet.activity;
 
-import com.plannet.others.PortalTimerHandler;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.plannet.others.PortalTimerHandler;
 
 public class MainActivity extends ActionBarActivity {
 

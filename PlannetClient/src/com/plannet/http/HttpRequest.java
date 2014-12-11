@@ -13,15 +13,14 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 public class HttpRequest {
-	
-	
+
 	public void signInPost() {
-		
+
 		// 범용적으로 쓸 수 있게 Post 요청 기본 빼기
-		
+
 		String url = "http://xxx.xxx.xxx.xxx:xxxx/login.jsp"; // strings.xml로 빼고
 		HttpClient http = new DefaultHttpClient();
-		
+
 		try {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("name", "유재석"));
@@ -31,7 +30,7 @@ public class HttpRequest {
 			HttpConnectionParams.setSoTimeout(params, 5000);
 
 			HttpPost httpPost = new HttpPost(url);
-			
+
 			UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
 			httpPost.setEntity(entityRequest);
 
