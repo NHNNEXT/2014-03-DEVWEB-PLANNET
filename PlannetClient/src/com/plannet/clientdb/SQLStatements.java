@@ -1,5 +1,10 @@
 package com.plannet.clientdb;
 
+import java.sql.PreparedStatement;
+
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+
 public class SQLStatements {
 	public final static String createUserTable = "CREATE TABLE IF NOT EXISTS user("
 			+ "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
@@ -26,4 +31,8 @@ public class SQLStatements {
 			+ "FOREIGN KEY(uid) REFERENCES user(uid)"
 			+ "FOREIGN KEY(cid) REFERENCES category(cid)"
 			+ ");";
+	
+//	public static PreparedStatement insertUser(SQLiteDatabase db){
+//		SQLiteStatement stmt = db.compileStatement("INSERT INTO user VALUES(,?,?,?)");
+//	}
 }
