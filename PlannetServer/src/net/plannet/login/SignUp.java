@@ -27,7 +27,7 @@ public class SignUp extends HttpServlet {
 		try {
 			PlanDAO pd = new PlanDAO();
 			// DB에 Email일치여부 확인
-			if (pd.isExistEmail(email)) {
+			if (new PlanDAO().isExistEmail(email)) {
 				// 일치하는 Email이 있을 경우 Response로 사용자에게 전달
 				resp.setCharacterEncoding("UTF-8");
 			    resp.setContentType("text/xml");
@@ -35,7 +35,8 @@ public class SignUp extends HttpServlet {
 			    out.write("그 이메일 이미 있음. 딴 거 써.");
 				// 다시 회원가입 페이지로
 			}else{
-				pd.signUp(email, password, name);
+				System.out.println("DB에 저장!");
+				new PlanDAO().signUp(email, password, name);
 				// 그렇지 않으면
 				// DB에 저장
 				

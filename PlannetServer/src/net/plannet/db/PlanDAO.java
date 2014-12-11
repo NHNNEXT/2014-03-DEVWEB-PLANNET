@@ -40,7 +40,7 @@ public class PlanDAO {
 	}
 	
 	public boolean signIn(String email, String pw) throws SQLException {
-		String sql = "select * from user where email like ? and pw like ?";
+		String sql = "select * from user where email = ? and pw = ?";
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, email);
 		pstmt.setString(2, pw);
@@ -65,7 +65,6 @@ public class PlanDAO {
 		pstmt.setString(1, email);
 		pstmt.setString(2, pw);
 		pstmt.setString(3, name);
-
 		pstmt.executeUpdate();
 		closeRS_PS_CONN();
 	}
@@ -76,11 +75,10 @@ public class PlanDAO {
 		pstmt.setString(1, email);
 
 		resultSet = pstmt.executeQuery();
-		resultSet.next();
-
-		String getEmail = resultSet.getString("email");
+		resultSet.last();
+		int countRow = resultSet.getRow();
 		closeRS_PS_CONN();
-		if (getEmail == email)
+		if(countRow == 1)
 			return true;
 		return false;
 	}
