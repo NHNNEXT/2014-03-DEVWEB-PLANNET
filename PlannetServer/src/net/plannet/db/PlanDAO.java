@@ -82,6 +82,27 @@ public class PlanDAO {
 			return true;
 		return false;
 	}
+	
+	public int getUID(String email) throws SQLException{
+		String sql = "select uid from user where email = ?;";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, email);
+		
+		resultSet = pstmt.executeQuery();
+		resultSet.last();
+		System.out.println(resultSet.getInt("uid"));
+		return resultSet.getInt("uid");
+	}
+	
+	public void saveUUID(int uid, String uuid)
+			throws SQLException {
+		String sql = "insert into signUpManage values (?, ?, now());";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, uid);
+		pstmt.setString(2, uuid);
+		pstmt.executeUpdate();
+		closeRS_PS_CONN();
+	}
 
 	public ArrayList<Plan> pullAllPlans() throws SQLException {
 		String sql = "select * from Plan";
