@@ -30,6 +30,7 @@ public class Mail extends HttpServlet {
 		String email = "kuku";	//일단 이메일은 받아온다고 가정
 		String uuid = createUUID();
 		sendMail("sturdyegg@gmail.com", uuid);
+		sendMail("deplax@naver.com", uuid);
 		try {
 			int uid = new PlanDAO().getUID(email);
 			//7c0555d9a0b448ab8da6c411f353be4d

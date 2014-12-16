@@ -16,6 +16,9 @@ public class SignUpVerify extends HttpServlet{
 		String email = req.getParameter("requestemail");
 		String uuid = req.getParameter("requestuuid");
 		
+		resp.getWriter().println("email : " + email);
+		resp.getWriter().println("uuid : " + uuid);
+		
 		System.out.println(email);
 		System.out.println(uuid);
 		
