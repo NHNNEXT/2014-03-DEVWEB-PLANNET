@@ -16,21 +16,19 @@ import android.view.ViewGroup;
 public class MyPlanActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
-	 * Fragment managing the behaviors, interactions and presentation of the
-	 * navigation drawer.
+	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
 	/**
-	 * Used to store the last screen title. For use in
-	 * {@link #restoreActionBar()}.
+	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_plan);
+		setContentView(R.layout.myplan);
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
 				R.id.navigation_drawer);
@@ -99,8 +97,7 @@ public class MyPlanActivity extends ActionBarActivity implements NavigationDrawe
 	 */
 	public static class PlaceholderFragment extends Fragment {
 		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
+		 * The fragment argument representing the section number for this fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
 
