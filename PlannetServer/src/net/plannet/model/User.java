@@ -12,13 +12,19 @@ public class User {
 	}
 	
 	public User(String name, String email, String pw) {
-		this(name, pw);
+		this(email, pw);
 		this.name = name;
 	}
 	
 	public User(int uid, String name, String email, String pw) {
 		this(name, email, pw);
 		this.uid = uid;
+	}
+	
+	public User(Verify verifyInfo) {
+		this.email = verifyInfo.getEmail();
+		this.pw = verifyInfo.getPw();
+		this.name = verifyInfo.getName();
 	}
 
 	public int getUid() {

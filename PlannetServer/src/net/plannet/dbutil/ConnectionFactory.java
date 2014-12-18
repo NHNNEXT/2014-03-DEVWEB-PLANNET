@@ -9,7 +9,7 @@ public class ConnectionFactory {
 	}
 
 	public static Connection getConnection() {
-		String url = "jdbc:mysql://10.73.45.137:3306/testDB";
+		String url = "jdbc:mysql://10.73.45.137:3306/plannet";
 		String id = "root";
 		String pw = "plan1004";
 
