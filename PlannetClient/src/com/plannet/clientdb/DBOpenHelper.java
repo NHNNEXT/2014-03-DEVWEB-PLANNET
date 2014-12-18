@@ -15,6 +15,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	// Helper 객체 만들어 getWritableDatabase/getReadableDatabase를 사용할것.
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		db.execSQL(SQLStatements.createPersonalTable);
 		db.execSQL(SQLStatements.createUserTable);
 		db.execSQL(SQLStatements.createCategoryTable);
 		db.execSQL(SQLStatements.createPlanTable);

@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
 
 		// new Thread() {
 		// public void run() {
-		// HttpRequest.SignUp("333eplan@gmail.com", "boeldk2012");
+		// HttpRequest.SignUp("333eplan@gmail.com", "고예찬", "boeldk2012");
 		// };
 		// }.start();
 

@@ -2,9 +2,11 @@ package com.plannet.http;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import android.util.Log;
 
+import com.plannet.model.User;
 import com.plannet.others.Utilities;
 
 public class HttpRequest {
@@ -28,6 +30,8 @@ public class HttpRequest {
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("Cache-Control", "no-cache");
 			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("charset","euc-kr");
+			conn.setRequestProperty("Accept-Charset", "UTF-8");
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			return conn;
@@ -38,10 +42,35 @@ public class HttpRequest {
 		}
 	}
 
-	public static String SignUp(String email, String password) {
+	public static String SignIn(String email, String password) {
+		HttpURLConnection conn = getConnection("SignIn");
+		
+		User user = new User(email, password);
+		ArrayList<Object> userList = new ArrayList<Object>();
+		userList.add(user);
+		
+		Utilities.setRequestBody(conn, userList);
+
+		try {
+			conn.connect();
+			Log.e("SignInProxy : ", "" + conn.getResponseCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("SignInProxy : ", "getConnection Error!");
+		}
+
+		String response = Utilities.getResponseBody(conn);
+		return response;
+	}
+	
+	public static String SignUp(String email, String name, String password) {
 		HttpURLConnection conn = getConnection("SignUp");
-		conn.setRequestProperty("email", email);
-		conn.setRequestProperty("password", password);
+
+		User user = new User(email, name, password);
+		ArrayList<Object> userList = new ArrayList<Object>();
+		userList.add(user);
+		
+		Utilities.setRequestBody(conn, userList);
 
 		try {
 			conn.connect();

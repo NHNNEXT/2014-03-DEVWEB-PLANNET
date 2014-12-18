@@ -2,7 +2,7 @@ package com.plannet.clientdb;
 
 
 public class SQLStatements {
-	public final static String createJSessionIdTable = "CREATE TABLE IF NOT EXISTS personal("
+	public final static String createPersonalTable = "CREATE TABLE IF NOT EXISTS personal("
 			+ "uuid TEXT"
 			+ ");";
 	

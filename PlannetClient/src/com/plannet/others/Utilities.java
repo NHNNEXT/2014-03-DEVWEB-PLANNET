@@ -46,11 +46,15 @@ public class Utilities {
 		return gson.toJson(bodyContent);
 	}
 
-	public static void setRequestBody(HttpURLConnection conn, ArrayList<Object> bodyContent) throws IOException {
+	public static void setRequestBody(HttpURLConnection conn, ArrayList<Object> bodyContent) {
 		String JSON = Utilities.GsonConvertToString(bodyContent);
+		try{
 		DataOutputStream writer = new DataOutputStream(conn.getOutputStream());
 		if (bodyContent != null)
 			writer.writeBytes(JSON);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public static String getResponseBody(HttpURLConnection conn) {
