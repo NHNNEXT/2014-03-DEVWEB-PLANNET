@@ -2,10 +2,12 @@ package com.plannet.clientdb;
 
 
 public class SQLStatements {
+	public final static String createJSessionIdTable = "CREATE TABLE IF NOT EXISTS personal("
+			+ "uuid TEXT"
+			+ ");";
+	
 	public final static String createUserTable = "CREATE TABLE IF NOT EXISTS user("
 			+ "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-			+ "email TEXT NOT NULL,"
-			+ "pw TEXT NOT NULL,"
 			+ "name TEXT"
 			+ ");";
 
