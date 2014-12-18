@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.plannet.others.PortalTimerHandler;
+
 public class MainActivity extends ActionBarActivity {
 
 	@Override
@@ -12,13 +14,14 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		new Thread() {
-			public void run() {
-				// HttpRequest.SignUp("333eplan@gmail.com", "boeldk2012");
-			};
-		}.start();
-		// PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
-		// handler.execute(3000);
+		// new Thread() {
+		// public void run() {
+		// HttpRequest.SignUp("333eplan@gmail.com", "boeldk2012");
+		// };
+		// }.start();
+
+		PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
+		handler.execute(3000);
 	}
 
 	@Override

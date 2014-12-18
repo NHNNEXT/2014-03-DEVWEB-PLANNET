@@ -14,14 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/signInButton"
         android:layout_alignBottom="@+id/signInButton"
-        android:layout_alignRight="@+id/emailEdit"
+        android:layout_alignRight="@+id/passwordEdit"
         android:text="@string/sign_up" />
 
     <TextView
         android:id="@+id/emailEditCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/emailEdit"
+        android:layout_above="@+id/passwordEdit"
         android:layout_marginBottom="143dp"
         android:layout_toRightOf="@+id/signInButton"
         android:text="@string/app_name"
@@ -40,8 +40,8 @@
         android:id="@+id/signInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/emailEdit"
-        android:layout_below="@+id/emailEdit"
+        android:layout_alignLeft="@+id/passwordEdit"
+        android:layout_below="@+id/passwordEdit"
         android:layout_marginTop="85dp"
         android:text="@string/sign_in" />
 
@@ -49,7 +49,7 @@
         android:id="@+id/emailSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/emailEdit"
+        android:layout_alignLeft="@+id/passwordEdit"
         android:layout_alignParentTop="true"
         android:layout_marginTop="236dp"
         android:ems="10"
