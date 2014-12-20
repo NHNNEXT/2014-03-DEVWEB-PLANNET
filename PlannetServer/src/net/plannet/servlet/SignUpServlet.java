@@ -29,8 +29,11 @@ public class SignUpServlet extends HttpServlet {
 			System.out.println(email);
 			System.out.println(password);
 			System.out.println(name);
-			User user = new User(name, email, password);
-
+			//User user = new User(name, email, password);
+			
+			String json = GsonUtil.getJsonFromRequest(req);
+			User[] temp = GsonUtil.getGsonConverter().fromJson(json, User[].class);
+			User user = temp[0];
 			// 이메일 isExist?
 			ArrayList<User> userRecord = new SignUpDAO().selectEmail(user);
 
