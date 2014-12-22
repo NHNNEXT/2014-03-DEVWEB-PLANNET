@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.plannet.db.SignUpDAO;
 import net.plannet.model.User;
-import net.plannet.model.Verify;
 
 @WebServlet("/Verify")
 public class VerifyServlet extends HttpServlet {
@@ -19,14 +18,14 @@ public class VerifyServlet extends HttpServlet {
 			throws ServletException, IOException {
 		//uuid를 verify table의 uuid와 비교 [select]
 		String uuid = req.getParameter("requestuuid");
-		Verify verifyInfo = new SignUpDAO().selectVerify(uuid);
+		User verifiedInfo = new SignUpDAO().selectVerify(uuid);
 		//user가 존재하지 않는 경우 에러처리
 		
 		//존재하지 않을 경우	
-		if(verifyInfo == null){return;}
+		if(verifiedInfo == null){return;}
 		//존재할 경우
 		//user테이블에 verify의 사용자 정보를 [insert]
-		new SignUpDAO().addUser(new User(verifyInfo));
+		new SignUpDAO().addUser(verifiedInfo);
 		//verify table의 해당 uuid를 [delete]
 		new SignUpDAO().deleteVerify(uuid);
 		

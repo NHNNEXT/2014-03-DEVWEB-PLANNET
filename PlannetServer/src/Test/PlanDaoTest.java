@@ -22,6 +22,4 @@ public class PlanDaoTest {
 		Plan plan = new Plan(1, "텝스 시험 단기간에 준비하기");
 		new PlanDAO().pushPlan(plan);
 	}
-	
-	
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.plannet.dbutil.QuerySet;
 import net.plannet.model.Plan;
 import net.plannet.model.User;
-import net.plannet.model.Verify;
 
 public class SignUpDAO extends DAO{
 	
@@ -30,30 +29,21 @@ public class SignUpDAO extends DAO{
 	
 	public void addVerify(User user, String uuid) {
 		String sql = "INSERT INTO verify (name, email, pw, uuid, expiredate) VALUES ( ?, ?, ?, ?, now())";
-		ArrayList<Object> queryParams = new ArrayList<Object>();
-		queryParams.add(user.getName());
-		queryParams.add(user.getEmail());
-		queryParams.add(user.getPw());
-		queryParams.add(uuid);
-		nonSelectQueryExecute(new QuerySet(sql, queryParams));
+		nonSelectQueryExecute(new QuerySet(sql, user.getName(), user.getEmail(), user.getPw(), user.getUuid()));
 		closeResource();
 	}
 	
-	public Verify selectVerify(String uuid) {
+	public User selectVerify(String uuid) {
 		String sql = "SELECT name, email, pw FROM verify WHERE uuid = ? ";
-		ArrayList<Object> queryParams = new ArrayList<Object>();
-		queryParams.add(uuid);
-		ArrayList<Verify> verifyList = selectQueryExecute(new QuerySet(sql, queryParams), Verify.class);
-		Verify verifyInfo = verifyList.get(0);
+		ArrayList<User> userList = selectQueryExecute(new QuerySet(sql, uuid), User.class);
+		User user = userList.get(0);
 		closeResource();
-		return verifyInfo;
+		return user;
 	}
 	
 	public void deleteVerify(String uuid) {
 		String sql = "DELETE FROM verify WHERE uuid = ?";
-		ArrayList<Object> queryParams = new ArrayList<Object>();
-		queryParams.add(uuid);
-		nonSelectQueryExecute(new QuerySet(sql, queryParams));
+		nonSelectQueryExecute(new QuerySet(sql, uuid));
 		closeResource();
 	}
 }

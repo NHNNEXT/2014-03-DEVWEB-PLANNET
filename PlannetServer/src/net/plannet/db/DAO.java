@@ -2,6 +2,7 @@ package net.plannet.db;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,32 +20,32 @@ public abstract class DAO {
 		conn = ConnectionFactory.getConnection();
 	}
 
-	protected <T> ArrayList<T> selectQueryExecute(QuerySet querySet,
+	public <T> ArrayList<T> selectQueryExecute(QuerySet querySet,
 			Class<T> objClass) {
 		try {
-			pstmt = conn.prepareStatement(querySet.getSql());
-			setParameter(querySet);
+			pstmt = querySet.preparePstmt(conn);
 			queryRs = pstmt.executeQuery();
-
-			ArrayList<T> result = new ArrayList<T>();
-			Field[] fields = objClass.getDeclaredFields();
-			Class[] fieldsClass = new Class[fields.length];
 			
-			for (int i = 0; i < fieldsClass.length; i++)
-				fieldsClass[i] = fields[i].getType();
-			Constructor<T> constructor = objClass
-					.getDeclaredConstructor(fieldsClass);
-
+			Method[] methods;
+			ArrayList<String> columnNames = querySet.getColumnNames(objClass);
+			ArrayList<String> setterNames = querySet.getSetterNames(columnNames);
+			
+			ArrayList<T> result = new ArrayList<T>();
+			
 			while (queryRs.next()) {
-				ArrayList<Object> args = new ArrayList<Object>();
-				
-				for (Field member : fields)
-					args.add(queryRs.getObject(member.getName()));
-				
-				T item = constructor.newInstance(args.toArray());
-				result.add(item);
+				Constructor<T> constructor = objClass.getConstructor();
+				int idx = 0;
+				T instance = constructor.newInstance();
+				for(String setterName : setterNames) {
+					String columnName = columnNames.get(idx++);
+					Field field = objClass.getDeclaredField(columnName);
+					Class paramType = field.getType();
+					Object args = queryRs.getObject(columnName);
+					Method setter = objClass.getDeclaredMethod(setterName, paramType);
+					setter.invoke(instance, args);
+				}
+				result.add(instance);
 			}
-
 			return result;
 		} catch (Exception e) {
 			System.out.println("[Select SQL Execution Failed] : "
@@ -52,11 +53,14 @@ public abstract class DAO {
 			return null;
 		}
 	}
+	
+	private void convertRecordToObject() {
+		
+	}
 
 	protected void nonSelectQueryExecute(QuerySet querySet) {
 		try {
-			pstmt = conn.prepareStatement(querySet.getSql());
-			setParameter(querySet);
+			pstmt = querySet.preparePstmt(conn);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("[NonSelect SQL Execution Failed] : "
@@ -76,18 +80,8 @@ public abstract class DAO {
 				conn.close();
 			}
 		} catch (Exception e) {
-			System.out.println("[Close SQL Execution Failed] : "
+			System.out.println("[Closing Resource Execution Failed] : "
 					+ e.getMessage());
-		}
-	}
-
-	private void setParameter(QuerySet querySet) {
-		try {
-			for (int idx = 0; idx < querySet.getValueCount(); idx++) {
-				pstmt.setObject((idx+1), querySet.getValue(idx));
-			}
-		} catch (Exception e) {
-			System.out.println("[SQL Creation Failed] : " + e.getMessage());
 		}
 	}
 }
