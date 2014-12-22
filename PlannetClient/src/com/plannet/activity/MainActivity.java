@@ -2,9 +2,11 @@ package com.plannet.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.plannet.clientdb.uuidDAO;
 import com.plannet.others.PortalTimerHandler;
 
 public class MainActivity extends ActionBarActivity {
@@ -20,8 +22,18 @@ public class MainActivity extends ActionBarActivity {
 		// };
 		// }.start();
 
-		PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
-		handler.execute(3000);
+		String uuid = new uuidDAO(this).select();
+		Log.e("uuid", "현재 uuid : " + uuid);
+
+		if (uuid.equals("default")) {
+			Log.e("uuid", "정보 없음 : SignInActivity로 이동함");
+			PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
+			handler.execute(3000);
+		} else {
+			// 여기서 http 요청하기 - uuid로 post 요청
+			PortalTimerHandler handler = new PortalTimerHandler(this, MyPlanActivity.class);
+			handler.execute(3000);
+		}
 	}
 
 	@Override
