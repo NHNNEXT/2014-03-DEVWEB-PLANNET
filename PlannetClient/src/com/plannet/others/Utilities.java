@@ -46,12 +46,10 @@ public class Utilities {
 		return gson.toJson(bodyContent);
 	}
 
-	public static void setRequestBody(HttpURLConnection conn, ArrayList<Object> bodyContent) {
-		String JSON = Utilities.GsonConvertToString(bodyContent);
+	public static void setRequestBody(HttpURLConnection conn, String bodyContent) {
 		try {
 			DataOutputStream writer = new DataOutputStream(conn.getOutputStream());
-			if (bodyContent != null)
-				writer.writeUTF(JSON); // 서버 쪽에서도 받을 때 DataInputStream 써서 reader.readUTF
+			writer.writeUTF(bodyContent); // 서버 쪽에서도 받을 때 DataInputStream 써서 reader.readUTF
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();

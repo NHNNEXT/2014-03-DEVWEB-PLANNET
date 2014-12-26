@@ -1,5 +1,6 @@
 package com.plannet.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -7,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.plannet.clientdb.uuidDAO;
-import com.plannet.others.PortalTimerHandler;
+import com.plannet.http.HttpRequest;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -16,24 +17,40 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// new Thread() {
-		// public void run() {
-		// HttpRequest.SignUp("333eplan@gmail.com", "고예찬", "boeldk2012");
-		// };
-		// }.start();
+		final Context context = this;
 
-		String uuid = new uuidDAO(this).select();
-		Log.e("uuid", "현재 uuid : " + uuid);
+		new Thread() {
+			public void run() {
+				// Sign Up
+				// HttpRequest.SignUp("333eplan@gmail.com", "고예찬", "wow2000");
 
-		if (uuid.equals("default")) {
-			Log.e("uuid", "정보 없음 : SignInActivity로 이동함");
-			PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
-			handler.execute(3000);
-		} else {
-			// 여기서 http 요청하기 - uuid로 post 요청
-			PortalTimerHandler handler = new PortalTimerHandler(this, MyPlanActivity.class);
-			handler.execute(3000);
-		}
+				// Sign In with email, pw
+				 String uuid = HttpRequest.SignIn("333eplan@gmail.com", "wow2000");
+				 new uuidDAO(context).delete();
+				 new uuidDAO(context).insert(uuid);
+
+				// Sign In with uuid
+				 String uuidFromDB = new uuidDAO(context).select();
+				 Log.e("uuid after select:", uuidFromDB);
+				// String responseResult = HttpRequest.UUIDSignIn(uuidFromDB);
+				// if(responseResult == ){
+				//
+				// }
+			};
+		}.start();
+
+		// String uuid = new uuidDAO(this).select();
+		// Log.e("uuid", "현재 uuid : " + uuid);
+		//
+		// if (uuid.equals("default")) {
+		// Log.e("uuid", "정보 없음 : SignInActivity로 이동함");
+		// PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
+		// handler.execute(500);
+		// } else {
+		// // 여기서 http 요청하기 - uuid로 post 요청
+		// PortalTimerHandler handler = new PortalTimerHandler(this, MyPlanActivity.class);
+		// handler.execute(3000);
+		// }
 	}
 
 	@Override

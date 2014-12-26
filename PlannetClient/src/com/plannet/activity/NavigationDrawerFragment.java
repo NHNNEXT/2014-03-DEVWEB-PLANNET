@@ -22,36 +22,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-/**
- * Fragment used for managing interactions for and presentation of a navigation drawer. See the <a
- * href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction"> design guidelines</a> for a
- * complete explanation of the behaviors implemented here.
- */
 public class NavigationDrawerFragment extends Fragment {
 
-	/**
-	 * Remember the position of the selected item.
-	 */
 	private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-	/**
-	 * Per the design guidelines, you should show the drawer on launch until the user manually expands it. This shared
-	 * preference tracks this.
-	 */
 	private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
-	/**
-	 * A pointer to the current callbacks instance (the Activity).
-	 */
 	private NavigationDrawerCallbacks mCallbacks;
-
-	/**
-	 * Helper component that ties the action bar to the navigation drawer.
-	 */
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerListView;
+	private ListView mDrawerListView; // 사이드바
 	private View mFragmentContainerView;
 
 	private int mCurrentSelectedPosition = 0;
@@ -65,36 +44,27 @@ public class NavigationDrawerFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Read in the flag indicating whether or not the user has demonstrated awareness of the
-		// drawer. See PREF_USER_LEARNED_DRAWER for details.
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
-		if (savedInstanceState != null) {
-			mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-			mFromSavedInstanceState = true;
-		}
-
-		// Select either the default item (0) or the last selected item.
-		selectItem(mCurrentSelectedPosition);
+		mUserLearnedDrawer = true; // 처음 사이드바 열려 있을지(false) 닫혀 있을지(true)
+		selectItem(0); // 처음 들어갈 사이드바 메뉴 번호
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// Indicate that this fragment would like to influence the set of actions in the action bar.
-		setHasOptionsMenu(true);
+		setHasOptionsMenu(true); // fragment가 액션 바의 액션에 영향을 주겠다
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
 		mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				selectItem(position);
 			}
 		});
+
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),
 				android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
 						getString(R.string.title_section1), getString(R.string.title_section2),
@@ -119,10 +89,10 @@ public class NavigationDrawerFragment extends Fragment {
 		mFragmentContainerView = getActivity().findViewById(fragmentId);
 		mDrawerLayout = drawerLayout;
 
-		// set a custom shadow that overlays the main content when the drawer opens
+		// 사이드바 열렸을 때 사이드바 바깥쪽에 드리워질 그림자 설정
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-		// set up the drawer's list view with items and click listener
 
+		// set up the drawer's list view with items and click listener
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
@@ -141,7 +111,6 @@ public class NavigationDrawerFragment extends Fragment {
 				if (!isAdded()) {
 					return;
 				}
-
 				getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
 			}
 
@@ -263,13 +232,8 @@ public class NavigationDrawerFragment extends Fragment {
 		return ((ActionBarActivity) getActivity()).getSupportActionBar();
 	}
 
-	/**
-	 * Callbacks interface that all activities using this fragment must implement.
-	 */
 	public static interface NavigationDrawerCallbacks {
-		/**
-		 * Called when an item in the navigation drawer is selected.
-		 */
+		// 사이드바의 아이템이 선택되었을 때 호출됨
 		void onNavigationDrawerItemSelected(int position);
 	}
 }

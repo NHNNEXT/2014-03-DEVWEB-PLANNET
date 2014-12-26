@@ -15,20 +15,13 @@ import android.view.ViewGroup;
 
 public class MyPlanActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-	/**
-	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
-
-	/**
-	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-	 */
 	private CharSequence mTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.myplan);
+		setContentView(R.layout.activity_my_plan);
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
 				R.id.navigation_drawer);

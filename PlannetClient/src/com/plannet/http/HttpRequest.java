@@ -18,7 +18,7 @@ public class HttpRequest {
 	// conn.connect();
 
 	public static HttpURLConnection getConnection(String servletName) {
-		String servletURL = "http://10.73.39.207:8080/" + servletName;
+		String servletURL = "http://10.73.38.213:8080/" + servletName;
 
 		try {
 			URL url = new URL(servletURL);
@@ -30,7 +30,7 @@ public class HttpRequest {
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("Cache-Control", "no-cache");
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("charset","euc-kr");
+			conn.setRequestProperty("charset", "euc-kr");
 			conn.setRequestProperty("Accept-Charset", "UTF-8");
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -44,12 +44,13 @@ public class HttpRequest {
 
 	public static String SignIn(String email, String password) {
 		HttpURLConnection conn = getConnection("SignIn");
-		
+
 		User user = new User(email, password);
 		ArrayList<Object> userList = new ArrayList<Object>();
 		userList.add(user);
-		
-		Utilities.setRequestBody(conn, userList);
+
+		String uuidJson = Utilities.GsonConvertToString(userList);
+		Utilities.setRequestBody(conn, uuidJson);
 
 		try {
 			conn.connect();
@@ -59,18 +60,39 @@ public class HttpRequest {
 			Log.e("SignInProxy : ", "getConnection Error!");
 		}
 
-		String response = Utilities.getResponseBody(conn);
+		Log.e("SignInResult : ", conn.getHeaderField("SigninResult"));
+
+		String response = conn.getHeaderField("uuid");
 		return response;
 	}
-	
+
+	public static String UUIDSignIn(String uuid) {
+		HttpURLConnection conn = getConnection("UUIDSignIn");
+
+		conn.addRequestProperty("uuid", uuid); // setRequestProperty 같은 key 값 있을 경우 덮어쓸건지 안쓸건지 차이
+
+		try {
+			conn.connect();
+			Log.e("SignInProxy : ", "" + conn.getResponseCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("SignInProxy : ", "getConnection Error!");
+		}
+
+		String result = conn.getHeaderField("SigninResult");
+		Log.e("SignInResult : ", result);
+		return result;
+	}
+
 	public static String SignUp(String email, String name, String password) {
 		HttpURLConnection conn = getConnection("SignUp");
 
 		User user = new User(email, name, password);
 		ArrayList<Object> userList = new ArrayList<Object>();
 		userList.add(user);
-		
-		Utilities.setRequestBody(conn, userList);
+
+		String uuidJson = Utilities.GsonConvertToString(userList);
+		Utilities.setRequestBody(conn, uuidJson);
 
 		try {
 			conn.connect();

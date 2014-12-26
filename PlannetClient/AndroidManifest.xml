@@ -35,4 +35,5 @@
             android:label="@string/title_activity_my_plan" >
         </activity>
     </application>
+
 </manifest>

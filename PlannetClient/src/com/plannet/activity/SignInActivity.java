@@ -14,6 +14,7 @@ public class SignInActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in);
 		Utilities.addPortalToButton(findViewById(R.id.signUpButton), this, SignUpActivity.class);
+		Utilities.addPortalToButton(findViewById(R.id.signInButton), this, MyPlanActivity.class);
 	}
 
 	@Override
