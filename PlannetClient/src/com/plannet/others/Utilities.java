@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,7 +35,7 @@ public class Utilities {
 		currentActivity.startActivity(intent);
 	}
 
-	public static boolean isEmail(String email) {
+	public static boolean isValidEmail(String email) {
 		if (email == null)
 			return false;
 		boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+", email.trim());
@@ -73,5 +74,9 @@ public class Utilities {
 			Log.e("Utilities : ", "GetResponseBody Error");
 			return null;
 		}
+	}
+
+	public static void toastPopUp(Activity currentActivity, String message) {
+		Toast.makeText(currentActivity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	}
 }

@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
+import com.plannet.others.SignInOnClickListener;
 import com.plannet.others.Utilities;
 
 public class SignInActivity extends ActionBarActivity {
@@ -13,8 +15,10 @@ public class SignInActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in);
-		Utilities.addPortalToButton(findViewById(R.id.signUpButton), this, SignUpActivity.class);
-		Utilities.addPortalToButton(findViewById(R.id.signInButton), this, MyPlanActivity.class);
+
+		Button signInButton = (Button) findViewById(R.id.signInButton);
+		signInButton.setOnClickListener(new SignInOnClickListener(this, MyPlanActivity.class));
+		Utilities.addPortalToButton(findViewById(R.id.signUpPortalButton), this, SignUpActivity.class);
 	}
 
 	@Override
