@@ -29,9 +29,7 @@ public abstract class DAO {
 			Method[] methods;
 			ArrayList<String> columnNames = querySet.getColumnNames(objClass);
 			ArrayList<String> setterNames = querySet.getSetterNames(columnNames);
-			
 			ArrayList<T> result = new ArrayList<T>();
-			
 			while (queryRs.next()) {
 				Constructor<T> constructor = objClass.getConstructor();
 				int idx = 0;

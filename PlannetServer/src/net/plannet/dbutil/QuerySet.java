@@ -17,8 +17,6 @@ public class QuerySet {
 	public QuerySet(String sql, Object... queryParams) {
 		this(sql);
 		this.queryParams = new ArrayList<Object>(Arrays.asList(queryParams));
-		for (Object kuku : this.queryParams)
-			System.out.println("낼름낼름 : " + (String) kuku);
 	}
  
 	public PreparedStatement preparePstmt(Connection conn) {
@@ -27,8 +25,7 @@ public class QuerySet {
 			pstmt = conn.prepareStatement(sql);
 			int i = 1;
 			for (Object params : queryParams){
-				pstmt.setObject(i, params);
-				i++;
+				pstmt.setObject(i++, params);
 			}
 		} catch (Exception e) {
 			System.out.println("[PreparedStatement Execution Failed] : "
@@ -41,12 +38,10 @@ public class QuerySet {
 		objClass.getDeclaredFields();
 		sql = sql.trim();
 		int end = sql.indexOf("from");
+		if(end == -1)
+			end = sql.indexOf("FROM");
 		String section = sql.substring(6, end);
-		System.out.println("section : " + section);
 		String[] fragment = section.split(",");
-		for(String kuku : fragment){
-			System.out.println("낼룸낼룸 : " + kuku);
-		}
 		ArrayList<String> columns = new ArrayList<String>();
 		for (String column : fragment) {
 			column = column.trim();
