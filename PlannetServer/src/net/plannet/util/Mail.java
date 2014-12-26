@@ -10,7 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mail {
-	static String devAddr = "http://10.73.38.213:8080/Verify";
 	public static void sendMail(String email, String uuid){
 		String host = "smtp.gmail.com";
 		String from = "plannetnoreply";
@@ -31,7 +30,7 @@ public class Mail {
 				+ "<div style='padding: 10px 10px 10px 10px;' class='contents'>"
 				+ "<p style=''>Plannet에 서비스를 이용하기 위해서는 아직 가입 절차가 남았습니다. 서비스를 이용하기 위해서는 아래의 링크를 눌러 가입을 완료 하여야 합니다.</p>"
 				+ "<p style='font-size: 12px; color: #445544;' class='warning'>*인증 유효시간은 메일 도착으로부터 1시간이며, 1시간이 초과했을 경우 다시 가입절차를 밟아 서비스를 이용할 수 있습니다.</p>"
-				+ "<form style='' action='"+ devAddr +"' method='post' id='verify'>"
+				+ "<form style='' action='"+ RequestResult.MailingRequestAddress +"' method='post' id='verify'>"
 				+ "<input type='hidden' name='requestemail' value='" + email + "'>"
 				+ "<input type='hidden' name='requestuuid' value='" + uuid + "'>"
 				+ "<button style='' type='submit' form='verify' value='Verify'>"

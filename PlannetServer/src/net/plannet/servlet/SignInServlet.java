@@ -23,7 +23,6 @@ import com.google.gson.reflect.TypeToken;
 
 @WebServlet("/SignIn")
 public class SignInServlet extends HttpServlet {
-	public static final String SESSION_USER_ID = "uuid";
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -57,7 +56,7 @@ public class SignInServlet extends HttpServlet {
 					resp.setHeader("uuid", uuid);
 					resp.setHeader("SigninResult", RequestResult.Success);
 					HttpSession session = req.getSession();
-					session.setAttribute(SESSION_USER_ID, uuid);
+					session.setAttribute(RequestResult.SESSION_USER_ID, userFromDB.getUid());
 				} else {
 					// 실패했을 경우
 					resp.setHeader("SigninResult", RequestResult.Fail);

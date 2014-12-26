@@ -32,7 +32,7 @@ public class UUIDSignInServlet extends HttpServlet {
 				// uuid에 해당하는 id/pw를 꺼내 로그인한다.
 				resp.setHeader("SigninResult", RequestResult.Success);
 				HttpSession session = req.getSession();
-				session.setAttribute(SignInServlet.SESSION_USER_ID, uuid);
+				session.setAttribute(RequestResult.SESSION_USER_ID, userList.get(0).getUid());
 				// uuid expireDate update한다. (옵션)
 			} else {
 				// uuid가 없을 경우

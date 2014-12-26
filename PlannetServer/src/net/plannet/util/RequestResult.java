@@ -16,4 +16,9 @@ public class RequestResult {
 	public final static String EmailOverlap = "EmailOverlap";
 	public final static String FormIncorrect = "FormIncorrect";
 
+	//session
+	public final static String SESSION_USER_ID = "uid";
+	
+	//address
+	public final static String MailingRequestAddress = "http://10.73.38.213:8080/Verify";
 }
