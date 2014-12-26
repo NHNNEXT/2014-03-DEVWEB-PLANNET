@@ -1,12 +1,10 @@
 package net.plannet.dbutil;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class QuerySet {
 	private String sql;
@@ -18,46 +16,55 @@ public class QuerySet {
 
 	public QuerySet(String sql, Object... queryParams) {
 		this(sql);
-		this.queryParams = (ArrayList<Object>) Arrays.asList(queryParams);
+		this.queryParams = new ArrayList<Object>(Arrays.asList(queryParams));
+		for (Object kuku : this.queryParams)
+			System.out.println("낼름낼름 : " + (String) kuku);
 	}
-
+ 
 	public PreparedStatement preparePstmt(Connection conn) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			for (Object params : queryParams)
-				pstmt.setObject(1, params);
+			int i = 1;
+			for (Object params : queryParams){
+				pstmt.setObject(i, params);
+				i++;
+			}
 		} catch (Exception e) {
 			System.out.println("[PreparedStatement Execution Failed] : "
 					+ e.getMessage());
 		}
 		return pstmt;
 	}
-	
+
 	public <T> ArrayList<String> getColumnNames(Class<T> objClass) {
 		objClass.getDeclaredFields();
 		sql = sql.trim();
 		int end = sql.indexOf("from");
 		String section = sql.substring(6, end);
+		System.out.println("section : " + section);
 		String[] fragment = section.split(",");
+		for(String kuku : fragment){
+			System.out.println("낼룸낼룸 : " + kuku);
+		}
 		ArrayList<String> columns = new ArrayList<String>();
-		for(String column : fragment) {
+		for (String column : fragment) {
 			column = column.trim();
-			if(!column.equals("")) 
+			if (!column.equals(""))
 				columns.add(column);
 		}
-		if(columns.get(0).equals("*")) {
+		if (columns.get(0).equals("*")) {
 			columns.remove(0);
 			Field[] fields = objClass.getDeclaredFields();
-			for(Field field : fields)
+			for (Field field : fields)
 				columns.add(field.getName());
 		}
 		return columns;
 	}
-	
+
 	public ArrayList<String> getSetterNames(ArrayList<String> columns) {
 		ArrayList<String> setters = new ArrayList<String>();
-		for(String column : columns) {
+		for (String column : columns) {
 			char firstChar = Character.toUpperCase(column.charAt(0));
 			String setterName = "set" + firstChar + column.substring(1);
 			setters.add(setterName);

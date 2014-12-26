@@ -2,7 +2,6 @@ package net.plannet.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +14,7 @@ import net.plannet.model.User;
 import net.plannet.util.GsonUtil;
 import net.plannet.util.Mail;
 import net.plannet.util.RequestResult;
+import net.plannet.util.UUIDControl;
 
 @WebServlet("/SignUp")
 public class SignUpServlet extends HttpServlet {
@@ -40,7 +40,7 @@ public class SignUpServlet extends HttpServlet {
 			// 입력이 들어오지 않았을 경우 에러처리
 			if (userRecord.size() == 0) {
 				// 정상 && uuid 발급
-				String uuid = createUUID();
+				String uuid = new UUIDControl().createUUID();
 				// verify table에 정보 저장
 				new SignUpDAO().addVerify(user, uuid);
 				resp.getWriter().print(RequestResult.Success);
@@ -51,13 +51,10 @@ public class SignUpServlet extends HttpServlet {
 			} else {
 				// 이미 존재하는 이메일일 경우 에러처리
 				resp.getWriter().print(RequestResult.EmailOverlap);
+				
 			}
 		} catch (Exception e) {
 			System.out.println("[SignUpServlet Failed] : " + e.getMessage());
 		}
-	}
-
-	public String createUUID() {
-		return UUID.randomUUID().toString().replace("-", "");
 	}
 }

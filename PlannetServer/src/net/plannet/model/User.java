@@ -2,10 +2,10 @@ package net.plannet.model;
 
 public class User {
 	private int uid;
-	private String uuid;
-	private String name;
-	private String email;
 	private String pw;
+	private String email;
+	private String name;
+	private String uuid;
 	
 	public User() {
 		;
