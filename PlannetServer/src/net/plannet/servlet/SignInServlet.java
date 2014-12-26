@@ -59,23 +59,6 @@ public class SignInServlet extends HttpServlet {
 					// id가 없을 경우에 대한 예외처리 (옵션)
 					// pw가 없을 경우에 대한 예외처리 (옵션)
 				}
-			} else {
-				// 클라로부터 uuid를 받는다.
-				String uuid = user.getUuid();
-				// 디비에서 uuid를 찾는다.
-				ArrayList<User> userList = new SignInDAO()
-						.selectExistUUID(uuid);
-				if (userList.size() == 1) {
-					// uuid가 있을 경우
-					// uuid에 해당하는 id/pw를 꺼내 로그인한다.
-					resp.setHeader("SigninResult", RequestResult.Success);
-					session.setAttribute(SESSION_USER_ID, uuid);
-					// uuid expireDate update한다. (옵션)
-				} else {
-					// uuid가 없을 경우
-					resp.setHeader("SigninResult", RequestResult.UUIDNotFound );
-					// 클라에 로그인 화면으로 갈 것을 요청한다.
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
