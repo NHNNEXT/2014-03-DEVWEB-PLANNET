@@ -22,6 +22,7 @@ public abstract class DAO {
 
 	public <T> ArrayList<T> selectQueryExecute(QuerySet querySet,
 			Class<T> objClass) {
+		ArrayList<T> result = new ArrayList<T>();
 		try {
 			pstmt = querySet.preparePstmt(conn);
 			queryRs = pstmt.executeQuery();
@@ -29,7 +30,6 @@ public abstract class DAO {
 			Method[] methods;
 			ArrayList<String> columnNames = querySet.getColumnNames(objClass);
 			ArrayList<String> setterNames = querySet.getSetterNames(columnNames);
-			ArrayList<T> result = new ArrayList<T>();
 			while (queryRs.next()) {
 				Constructor<T> constructor = objClass.getConstructor();
 				int idx = 0;
@@ -44,12 +44,11 @@ public abstract class DAO {
 				}
 				result.add(instance);
 			}
-			return result;
 		} catch (Exception e) {
 			System.out.println("[Select SQL Execution Failed] : "
 					+ e.getMessage());
-			return null;
 		}
+		return result;
 	}
 	
 	private void convertRecordToObject() {

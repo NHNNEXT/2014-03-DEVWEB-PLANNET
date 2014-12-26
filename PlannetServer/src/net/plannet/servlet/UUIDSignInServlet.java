@@ -22,7 +22,7 @@ public class UUIDSignInServlet extends HttpServlet {
 		
 		// 클라로부터 uuid를 받는다.
 		String uuid = req.getHeader("uuid");
-		System.out.println("uuid : " + uuid);
+		System.out.println("signin uuid : " + uuid);
 
 		if (uuid != null) {
 			// 디비에서 uuid를 찾는다.

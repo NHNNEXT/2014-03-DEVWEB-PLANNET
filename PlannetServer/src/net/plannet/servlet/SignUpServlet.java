@@ -1,6 +1,7 @@
 package net.plannet.servlet;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,8 @@ import net.plannet.util.Mail;
 import net.plannet.util.RequestResult;
 import net.plannet.util.UUIDControl;
 
+import com.google.gson.reflect.TypeToken;
+
 @WebServlet("/SignUp")
 public class SignUpServlet extends HttpServlet {
 	@Override
@@ -23,17 +26,14 @@ public class SignUpServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			// 클라로부터 email, password를 받아 DB에 저장.
-			String name = req.getHeader("name");
-			String email = req.getHeader("email");
-			String password = req.getHeader("password");
-			System.out.println(email);
-			System.out.println(password);
-			System.out.println(name);
-			//User user = new User(name, email, password);
-			
+
 			String json = GsonUtil.getJsonFromRequest(req);
-			User[] temp = GsonUtil.getGsonConverter().fromJson(json, User[].class);
-			User user = temp[0];
+			Type t = new TypeToken<ArrayList<User>>() {
+			}.getType();
+			ArrayList<User> temp = GsonUtil.getGsonConverter()
+					.fromJson(json, t);
+			User user = temp.get(0);
+
 			// 이메일 isExist?
 			ArrayList<User> userRecord = new SignUpDAO().selectEmail(user);
 
@@ -46,12 +46,12 @@ public class SignUpServlet extends HttpServlet {
 				resp.getWriter().print(RequestResult.Success);
 
 				// 이메일 발송
-				Mail.sendMail(email, uuid);
+				Mail.sendMail(user.getEmail(), uuid);
 
 			} else {
 				// 이미 존재하는 이메일일 경우 에러처리
 				resp.getWriter().print(RequestResult.EmailOverlap);
-				
+
 			}
 		} catch (Exception e) {
 			System.out.println("[SignUpServlet Failed] : " + e.getMessage());

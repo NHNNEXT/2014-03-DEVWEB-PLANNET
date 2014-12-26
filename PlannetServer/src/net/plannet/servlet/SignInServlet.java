@@ -32,24 +32,29 @@ public class SignInServlet extends HttpServlet {
 			OutputStreamWriter outWriter = new OutputStreamWriter(out);
 			HttpSession session = req.getSession();
 			// 클라로부터 id/pw를 받는다.
-			String json = GsonUtil.getJSONJSON(req);
+			String json = GsonUtil.getJsonFromRequest(req);
 			Type t = new TypeToken<ArrayList<User>>(){}.getType();
 			ArrayList<User> temp = GsonUtil.getGsonConverter().fromJson(json,
 					t);
-			User user = temp.get(0);
-			System.out.println("getemail : " + user.getEmail());
-			System.out.println("pw : " + user.getPw());
+			User userFromClient = temp.get(0);
+			System.out.println("getemail : " + userFromClient.getEmail());
+			System.out.println("pw : " + userFromClient.getPw());
 			// id/pw가 null이니다.
-			if (user.getEmail() != null && user.getPw() != null) {
+			if (userFromClient.getEmail() != null && userFromClient.getPw() != null) {
 				// 로그인을 한다.(select쿼리를 던진다.)
+				ArrayList<User> userListFromDB = new SignInDAO().selectSignIn(userFromClient);
 				
-				ArrayList<User> userList = new SignInDAO().selectSignIn(user);
-				System.out.println("userList.size : " + userList.size());
-				if (userList.size() == 1) {
+				System.out.println("userList.size : " + userListFromDB.size());
+				if (userListFromDB.size() == 1) {
+					User userFromDB = userListFromDB.get(0);
 					// 성공했을 경우
 					// 클라에게 uuid를 던져준다.
 					String uuid = new UUIDControl().createUUID();
 					System.out.println("uuid : " + uuid);
+					
+					//DB에 집어넣는다.
+					new SignInDAO().updateUUID(userFromDB.getUid(), uuid);
+					
 					resp.setHeader("uuid", uuid);
 					resp.setHeader("SigninResult", RequestResult.Success);
 					session.setAttribute(SESSION_USER_ID, uuid);

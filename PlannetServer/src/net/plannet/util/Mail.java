@@ -10,7 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mail {
-	static String devAddr = "http://10.73.39.207:8080/Verify";
+	static String devAddr = "http://10.73.38.213:8080/Verify";
 	public static void sendMail(String email, String uuid){
 		String host = "smtp.gmail.com";
 		String from = "plannetnoreply";

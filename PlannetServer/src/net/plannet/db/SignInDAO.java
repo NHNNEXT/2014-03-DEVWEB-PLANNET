@@ -28,8 +28,15 @@ public class SignInDAO extends DAO{
 	
 	public ArrayList<User> selectExistUUID(String uuid) {
 		String sql = "SELECT * FROM user WHERE uuid = ?";
-		ArrayList<User> userList = selectQueryExecute(new QuerySet(uuid), User.class);
+		ArrayList<User> userList = selectQueryExecute(new QuerySet(sql, uuid), User.class);
 		closeResource();
 		return userList;
 	}
+	
+	public void updateUUID(int uid, String uuid) {
+		String sql = "UPDATE user SET uuid = ? WHERE uid = ?";
+		nonSelectQueryExecute(new QuerySet(sql, uuid, uid));
+		closeResource();
+	}
+	
 }
