@@ -30,7 +30,6 @@ public class SignInServlet extends HttpServlet {
 		try {
 			OutputStream out = resp.getOutputStream();
 			OutputStreamWriter outWriter = new OutputStreamWriter(out);
-			HttpSession session = req.getSession();
 			// 클라로부터 id/pw를 받는다.
 			String json = GsonUtil.getJsonFromRequest(req);
 			Type t = new TypeToken<ArrayList<User>>(){}.getType();
@@ -57,6 +56,7 @@ public class SignInServlet extends HttpServlet {
 					
 					resp.setHeader("uuid", uuid);
 					resp.setHeader("SigninResult", RequestResult.Success);
+					HttpSession session = req.getSession();
 					session.setAttribute(SESSION_USER_ID, uuid);
 				} else {
 					// 실패했을 경우
