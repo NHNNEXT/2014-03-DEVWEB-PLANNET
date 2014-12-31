@@ -41,19 +41,28 @@ public class SignUpOnClickListener implements OnClickListener {
 			return;
 		}
 
-		new Thread() {
+		Thread thread = new Thread() {
 			public void run() {
 				result = HttpRequest.SignUp(email, name, password);
-				Log.e("SignUp", result);
+				Log.e("SignUp", result );
 			};
-		}.start();
-
-		if (result == "EmailOverlap") {
+		};
+		
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		if (result.equals("EmailOverlap")) {
 			Utilities.toastPopUp(currentActivity, "이미 존재하는 이메일입니다!");
 			return;
 		}
 
-		if (result == "Success") {
+		if (result.equals("Success")) {
 			Utilities.toastPopUp(currentActivity, "회원가입을 축하합니다!");
 			PortalTimerHandler handler = new PortalTimerHandler(currentActivity, targetActivity);
 			handler.execute(3000);

@@ -42,7 +42,7 @@ public class Utilities {
 		return b;
 	}
 
-	public static String GsonConvertToString(ArrayList<Object> bodyContent) {
+	public static String GsonConvertToString(Object bodyContent) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(bodyContent);
 	}

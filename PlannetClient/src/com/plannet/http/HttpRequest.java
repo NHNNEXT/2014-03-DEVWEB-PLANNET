@@ -18,7 +18,7 @@ public class HttpRequest {
 	// conn.connect();
 
 	public static HttpURLConnection getConnection(String servletName) {
-		String servletURL = "http://10.73.38.213:8080/" + servletName;
+		String servletURL = "http://10.73.39.159:8080/" + servletName;
 
 		try {
 			URL url = new URL(servletURL);
@@ -46,10 +46,7 @@ public class HttpRequest {
 		HttpURLConnection conn = getConnection("SignIn");
 
 		User user = new User(email, password);
-		ArrayList<Object> userList = new ArrayList<Object>();
-		userList.add(user);
-
-		String uuidJson = Utilities.GsonConvertToString(userList);
+		String uuidJson = Utilities.GsonConvertToString(user);
 		Utilities.setRequestBody(conn, uuidJson);
 
 		try {
@@ -61,7 +58,8 @@ public class HttpRequest {
 		}
 
 		Log.e("SignInResult : ", conn.getHeaderField("SigninResult"));
-
+		
+		
 		String response = conn.getHeaderField("uuid");
 		return response;
 	}
@@ -88,10 +86,8 @@ public class HttpRequest {
 		HttpURLConnection conn = getConnection("SignUp");
 
 		User user = new User(email, name, password);
-		ArrayList<Object> userList = new ArrayList<Object>();
-		userList.add(user);
 
-		String uuidJson = Utilities.GsonConvertToString(userList);
+		String uuidJson = Utilities.GsonConvertToString(user);
 		Utilities.setRequestBody(conn, uuidJson);
 
 		try {
@@ -102,7 +98,7 @@ public class HttpRequest {
 			Log.e("SignUpProxy : ", "getConnection Error!");
 		}
 
-		String response = Utilities.getResponseBody(conn);
+		String response = conn.getHeaderField("SignUpResult");
 		return response;
 	}
 }
