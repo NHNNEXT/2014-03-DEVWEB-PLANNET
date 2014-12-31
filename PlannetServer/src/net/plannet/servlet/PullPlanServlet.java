@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.plannet.db.PlanDAO;
 import net.plannet.model.Plan;
 import net.plannet.model.User;
+import net.plannet.util.ErrorUtil;
 import net.plannet.util.GsonUtil;
 
 @WebServlet("/PullPlan")
@@ -18,16 +19,12 @@ public class PullPlanServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-		String jsonRequest;
 		try {
-			jsonRequest = GsonUtil.getJsonFromRequest(req);
-			User user = GsonUtil.getGsonConverter().fromJson(jsonRequest, User.class);
+			GsonUtil.getObjectFromRequest(req, User.class);
 			ArrayList<Plan> planList = new PlanDAO().pullAllPlans();
-			String json = GsonUtil.getGsonConverter().toJson(planList);
-			
-			resp.getWriter().write(json);
+			GsonUtil.writeObjectOnResponse(resp, planList);
 		} catch (Exception e) {
-			System.out.println("[PullPlanServlet Failed] : " + e.getMessage());
+			ErrorUtil.printError("PullPlanServlet Failed", e);
 		}
 	}
 }

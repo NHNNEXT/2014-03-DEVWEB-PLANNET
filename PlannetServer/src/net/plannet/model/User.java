@@ -8,7 +8,6 @@ public class User {
 	private String uuid;
 	
 	public User() {
-		;
 	}
 	
 	public User(String email, String pw) {
@@ -66,5 +65,13 @@ public class User {
 		this.uuid = uuid;
 	}
 	
+	public boolean isValid() {
+		if(email == null || email.equals(""))
+			return false;
+		if(pw == null || pw.equals(""))
+			return false;
+		
+		return true;
+	}
 	
 }

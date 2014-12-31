@@ -20,8 +20,6 @@ public class SignInDAO extends DAO{
 	public ArrayList<User> selectSignIn(User user) {
 		String sql = "SELECT * FROM user WHERE email = ? and pw = ?";
 		ArrayList<User> userList = selectQueryExecute(new QuerySet(sql, user.getEmail(), user.getPw()), User.class);
-		for(User kuku : userList)
-			System.out.println(kuku.getEmail() + " | " + kuku.getPw());
 		closeResource();
 		return userList;
 	}

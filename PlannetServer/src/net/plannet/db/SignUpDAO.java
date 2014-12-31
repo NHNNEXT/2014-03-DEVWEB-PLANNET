@@ -3,7 +3,6 @@ package net.plannet.db;
 import java.util.ArrayList;
 
 import net.plannet.dbutil.QuerySet;
-import net.plannet.model.Plan;
 import net.plannet.model.User;
 
 public class SignUpDAO extends DAO{

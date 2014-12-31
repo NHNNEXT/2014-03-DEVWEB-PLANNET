@@ -18,8 +18,9 @@ public class QuerySet {
 		this(sql);
 		this.queryParams = new ArrayList<Object>(Arrays.asList(queryParams));
 	}
- 
-	public PreparedStatement preparePstmt(Connection conn) {
+	
+	//QuerySet 멤버변수를 이용하여 conn으로부터 초기화 된 PreparedStatement를 얻어온다.
+	public PreparedStatement getPstmt(Connection conn) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -34,7 +35,8 @@ public class QuerySet {
 		return pstmt;
 	}
 
-	public <T> ArrayList<String> getColumnNames(Class<T> objClass) {
+	//sql select문으로부터 얻고자하는 멤버 이름들을 추출한다. 즉 select와 from사이의 문자열들을 추출함.
+	public <T> ArrayList<String> getMemberNames(Class<T> objClass) {
 		objClass.getDeclaredFields();
 		sql = sql.trim();
 		int end = sql.indexOf("from");
@@ -57,9 +59,10 @@ public class QuerySet {
 		return columns;
 	}
 
-	public ArrayList<String> getSetterNames(ArrayList<String> columns) {
+	//setter함수명을 가진 리스트를 반환한다. 멤버명이 uid이면 setUid으로 스트링을 만든다.
+	public ArrayList<String> getSetterNames(ArrayList<String> members) {
 		ArrayList<String> setters = new ArrayList<String>();
-		for (String column : columns) {
+		for (String column : members) {
 			char firstChar = Character.toUpperCase(column.charAt(0));
 			String setterName = "set" + firstChar + column.substring(1);
 			setters.add(setterName);

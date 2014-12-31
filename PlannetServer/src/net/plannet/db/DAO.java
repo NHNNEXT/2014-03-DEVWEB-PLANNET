@@ -1,8 +1,5 @@
 package net.plannet.db;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +7,13 @@ import java.util.ArrayList;
 
 import net.plannet.dbutil.ConnectionFactory;
 import net.plannet.dbutil.QuerySet;
+import net.plannet.util.DaoUtil;
+import net.plannet.util.ErrorUtil;
 
 public abstract class DAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
-	protected ResultSet queryRs;
+	protected ResultSet rs;
 
 	protected DAO() {
 		conn = ConnectionFactory.getConnection();
@@ -24,61 +23,34 @@ public abstract class DAO {
 			Class<T> objClass) {
 		ArrayList<T> result = new ArrayList<T>();
 		try {
-			pstmt = querySet.preparePstmt(conn);
-			queryRs = pstmt.executeQuery();
-			
-			Method[] methods;
-			ArrayList<String> columnNames = querySet.getColumnNames(objClass);
-			ArrayList<String> setterNames = querySet.getSetterNames(columnNames);
-			while (queryRs.next()) {
-				Constructor<T> constructor = objClass.getConstructor();
-				int idx = 0;
-				T instance = constructor.newInstance();
-				for(String setterName : setterNames) {
-					String columnName = columnNames.get(idx++);
-					Field field = objClass.getDeclaredField(columnName);
-					Class paramType = field.getType();
-					Object args = queryRs.getObject(columnName);
-					Method setter = objClass.getDeclaredMethod(setterName, paramType);
-					setter.invoke(instance, args);
-				}
-				result.add(instance);
-			}
+			pstmt = querySet.getPstmt(conn);
+			rs = pstmt.executeQuery();
+			result = new DaoUtil().convertToObject(querySet, rs, objClass);
 		} catch (Exception e) {
-			System.out.println("[Select SQL Execution Failed] : "
-					+ e.getMessage());
+			ErrorUtil.printError("Select SQL Execution Failed", e);
 		}
 		return result;
-	}
-	
-	private void convertRecordToObject() {
-		
 	}
 
 	protected void nonSelectQueryExecute(QuerySet querySet) {
 		try {
-			pstmt = querySet.preparePstmt(conn);
+			pstmt = querySet.getPstmt(conn);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
-			System.out.println("[NonSelect SQL Execution Failed] : "
-					+ e.getMessage());
+			ErrorUtil.printError("NonSelect SQL Execution Failed", e);
 		}
 	}
 
 	protected void closeResource() {
 		try {
-			if (queryRs != null) {
-				queryRs.close();
-			}
-			if (pstmt != null) {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
 				pstmt.close();
-			}
-			if (conn != null) {
+			if (conn != null)
 				conn.close();
-			}
 		} catch (Exception e) {
-			System.out.println("[Closing Resource Execution Failed] : "
-					+ e.getMessage());
+			ErrorUtil.printError("Closing Resource Execution Failed", e);
 		}
 	}
 }

@@ -9,7 +9,6 @@ public class PlanDAO extends DAO {
 
 	public void pushPlan(Plan plan) {
 		String sql = "insert into plan(uid, title) values(?, ?)";
-		ArrayList<Object> queryParams = new ArrayList<Object>();
 		nonSelectQueryExecute(new QuerySet(sql, plan.getUid(), plan.getTitle()));
 		closeResource();
 	}
