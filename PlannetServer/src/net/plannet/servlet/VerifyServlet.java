@@ -19,6 +19,7 @@ public class VerifyServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		System.out.println("인증 시스템 진입!");
 		//uuid를 verify table의 uuid와 비교 [select]
 		String uuid = req.getParameter("requestuuid");
 		User verifiedInfo = new SignUpDAO().selectVerify(uuid);
@@ -31,6 +32,7 @@ public class VerifyServlet extends HttpServlet {
 		new SignUpDAO().addUser(verifiedInfo);
 		//verify table의 해당 uuid를 [delete]
 		new SignUpDAO().deleteVerify(uuid);
+		System.out.println("인증에 성공하였습니다.");
 		
 		//메일 인증하고 또 다시 그 버튼을 누르면 서버 500에러 
 	}

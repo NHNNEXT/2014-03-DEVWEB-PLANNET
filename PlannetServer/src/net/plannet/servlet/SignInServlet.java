@@ -28,6 +28,8 @@ public class SignInServlet extends HttpServlet {
 		try {
 			// 클라로부터 id/pw를 받는다.
 			User userFromReq = GsonUtil.getObjectFromRequest(req, User.class);
+			System.out.println(userFromReq.getEmail());
+			System.out.println(userFromReq.getPw());
 			
 			if (userFromReq.isValid()) {
 				// 로그인을 한다.(select쿼리를 던진다.)
@@ -43,11 +45,15 @@ public class SignInServlet extends HttpServlet {
 					
 					resp.setHeader("uuid", uuid);
 					resp.setHeader("SigninResult", RequestResult.Success);
+					System.out.println("로그인이 성공적으로 완료 되었습니다.");
 					HttpSession session = req.getSession();
 					session.setAttribute(RequestResult.SESSION_USER_ID, userRecord.getUid());
+				// 가가입은 되어 있으나 인증이 되지 않은 경우에 대한 처리 	
+				// }else if(){
 				} else {
 					// 실패했을 경우
 					resp.setHeader("SigninResult", RequestResult.Fail);
+					System.out.println("로그인이 실패!");
 					// id가 없을 경우에 대한 예외처리 (옵션)
 					// pw가 없을 경우에 대한 예외처리 (옵션)
 				}

@@ -7,7 +7,14 @@ import net.plannet.model.User;
 
 public class SignUpDAO extends DAO{
 	
-	public ArrayList<User> selectEmail(User user) {
+	public ArrayList<User> selectEmailVerifyTable(User user) {
+		String sql = "SELECT email FROM verify WHERE email = ? ";
+		ArrayList<User> userRecord = selectQueryExecute(new QuerySet(sql, user.getEmail()), User.class);
+		closeResource();
+		return userRecord;
+	}
+	
+	public ArrayList<User> selectEmailUserTable(User user) {
 		String sql = "SELECT * FROM user WHERE email = ? ";
 		ArrayList<User> userRecord = selectQueryExecute(new QuerySet(sql, user.getEmail()), User.class);
 		closeResource();

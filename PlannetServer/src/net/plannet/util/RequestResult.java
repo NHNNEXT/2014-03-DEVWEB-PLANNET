@@ -20,5 +20,5 @@ public class RequestResult {
 	public final static String SESSION_USER_ID = "uid";
 	
 	//address
-	public final static String MailingRequestAddress = "http://10.73.38.213:8080/Verify";
+	public final static String MailingRequestAddress = "http://10.73.39.159:8080/Verify";
 }

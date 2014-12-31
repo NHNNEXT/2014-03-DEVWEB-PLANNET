@@ -27,10 +27,14 @@ public class SignUpServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			User user = GsonUtil.getObjectFromRequest(req, User.class);
-			ArrayList<User> userRecord = new SignUpDAO().selectEmail(user);
+			ArrayList<User> userRecord = new SignUpDAO().selectEmailUserTable(user);
+			ArrayList<User> verifyRecord = new SignUpDAO().selectEmailVerifyTable(user);
+			
+			System.out.println("userRecort : " + userRecord.size());
+			System.out.println("verifyRecort : " + verifyRecord.size());
 
 			// 입력이 들어오지 않았을 경우 에러처리
-			if (userRecord.size() == 0) {
+			if (userRecord.size() == 0 && verifyRecord.size() == 0) {
 				// 정상 && uuid 발급
 				String uuid = new UUIDControl().createUUID();
 				// verify table에 정보 저장
@@ -42,7 +46,7 @@ public class SignUpServlet extends HttpServlet {
 
 			} else {
 				// 이미 존재하는 이메일일 경우 에러처리
-				resp.setHeader("SignUpResult", RequestResult.Fail);
+				resp.setHeader("SignUpResult", RequestResult.EmailOverlap);
 			}
 		} catch (Exception e) {
 			ErrorUtil.printError("SignUpError", e);
