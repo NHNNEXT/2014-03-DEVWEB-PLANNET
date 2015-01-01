@@ -1,4 +1,4 @@
-package com.plannet.others;
+package com.plannet.listener;
 
 import android.app.Activity;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.plannet.activity.R;
 import com.plannet.clientdb.uuidDAO;
 import com.plannet.http.HttpRequest;
+import com.plannet.others.Utilities;
 
 public class SignInOnClickListener implements OnClickListener {
 
@@ -25,8 +26,7 @@ public class SignInOnClickListener implements OnClickListener {
 	public void onClick(View v) {
 		final String email = ((EditText) currentActivity.findViewById(R.id.emailEdit)).getText().toString();
 		final String password = ((EditText) currentActivity.findViewById(R.id.passwordEdit)).getText().toString();
-		
-		
+
 		new Thread() {
 			public void run() {
 				// 실제로 return하는 건 uuid, 여기 서버 응답값 뭐인지 수정 필수!!!

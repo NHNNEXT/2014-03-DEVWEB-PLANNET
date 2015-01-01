@@ -12,7 +12,7 @@ public class User {
 		this.pw = pw;
 	}
 
-	public User(String email, String pw){
+	public User(String email, String pw) {
 		this.email = email;
 		this.pw = pw;
 	}

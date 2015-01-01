@@ -1,4 +1,4 @@
-package com.plannet.others;
+package com.plannet.listener;
 
 import android.app.Activity;
 import android.util.Log;
@@ -8,6 +8,8 @@ import android.widget.EditText;
 
 import com.plannet.activity.R;
 import com.plannet.http.HttpRequest;
+import com.plannet.others.PortalTimerHandler;
+import com.plannet.others.Utilities;
 
 public class SignUpOnClickListener implements OnClickListener {
 	private Activity currentActivity;
@@ -44,19 +46,17 @@ public class SignUpOnClickListener implements OnClickListener {
 		Thread thread = new Thread() {
 			public void run() {
 				result = HttpRequest.SignUp(email, name, password);
-				Log.e("SignUp", result );
+				Log.e("SignUp", result);
 			};
 		};
-		
+
 		thread.start();
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		if (result.equals("EmailOverlap")) {
 			Utilities.toastPopUp(currentActivity, "이미 존재하는 이메일입니다!");
 			return;

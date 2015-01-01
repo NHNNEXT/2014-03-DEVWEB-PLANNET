@@ -2,7 +2,6 @@ package com.plannet.http;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import android.util.Log;
 
@@ -58,8 +57,7 @@ public class HttpRequest {
 		}
 
 		Log.e("SignInResult : ", conn.getHeaderField("SigninResult"));
-		
-		
+
 		String response = conn.getHeaderField("uuid");
 		return response;
 	}

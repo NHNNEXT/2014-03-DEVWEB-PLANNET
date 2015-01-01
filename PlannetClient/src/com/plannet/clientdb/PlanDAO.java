@@ -66,7 +66,7 @@ public class PlanDAO extends AbstractDAO {
 
 	public long delete(int pid) {
 		db = helper.getWritableDatabase();
-		
+
 		return db.delete("plan", "pid=?", new String[] { Integer.toString(pid) });
 	}
 

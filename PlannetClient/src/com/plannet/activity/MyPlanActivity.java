@@ -1,124 +1,113 @@
 package com.plannet.activity;
 
-import android.app.Activity;
+import android.app.ActionBar;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
-public class MyPlanActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+import com.plannet.listener.DrawerListItemOnClickListener;
+import com.plannet.pages.PageFragment1;
+import com.plannet.pages.PageFragment2;
+import com.plannet.pages.PageFragment3;
+import com.plannet.pages.PagerAdapter;
 
-	private NavigationDrawerFragment mNavigationDrawerFragment;
-	private CharSequence mTitle;
+public class MyPlanActivity extends FragmentActivity {
+	private String[] navItems;
+	private ListView drawerNavList;
+	private DrawerLayout drawerLayout;
+
+	private ActionBar tabActionBar;
+	private ActionBarDrawerToggle drawerToggle;
+
+	private LinearLayout pagerContainer;
+	private PagerAdapter pagerAdapter;
+	private ViewPager pager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_plan);
 
-		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
-				R.id.navigation_drawer);
-		mTitle = getTitle();
+		// ////////////////////////
+		// 여기서부터 드로어
+		// ////////////////////////
 
-		// Set up the drawer.
-		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+		// 초기화
+		navItems = getResources().getStringArray(R.array.drawer_nav_list_items);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerNavList = (ListView) findViewById(R.id.drawer_nav_list);
+		// 드로어 네비게이션 리스트 내용 설정
+		drawerNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+		// 드로어 아이템 클릭 리스너 설정
+		drawerNavList.setOnItemClickListener(new DrawerListItemOnClickListener(drawerLayout));
+		// 액션바 초기화
+		tabActionBar = getActionBar();
+		// 액션바와 드로어를 연결 시켜주는 토글
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
+				R.string.open_drawer_message, R.string.close_drawer_message);
+		drawerLayout.setDrawerListener(drawerToggle); // 드로어와 액션바 토글을 연결
+		tabActionBar.setDisplayHomeAsUpEnabled(true);
+		// tabActionBar.setTitle("my plan");
+
+		// ////////////////////////
+		// 여기서부터 페이저
+		// ////////////////////////
+
+		// 초기화
+		pagerContainer = (LinearLayout) findViewById(R.id.pager_container);
+		pager = new ViewPager(this);
+		pager.setId(1); // view의 아이디 꼭 필요함
+		pagerContainer.addView(pager);// LinearLayout의 자식으로 ViewPager를 넣어줌
+
+		pagerAdapter = new PagerAdapter(this, pager); // pagerAdapter 클래스에 있는 설명 참고
+		tabActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Now"), PageFragment1.class);
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Later"), PageFragment2.class);
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Done"), PageFragment3.class);
 	}
 
 	@Override
-	public void onNavigationDrawerItemSelected(int position) {
-		// update the main content by replacing fragments
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-				.commit();
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// 뷰가 생성되는 시점에 pager height 크기 설정해주기 = wrapper height - button height
+		LinearLayout wrapper = (LinearLayout) findViewById(R.id.wrapper);
+		LinearLayout buttonContainer = (LinearLayout) findViewById(R.id.button_container);
+
+		Log.e("wrapper pixel height", "" + wrapper.getHeight());
+		Log.e("button layout pixel height", "" + buttonContainer.getHeight());
+
+		pagerContainer.getLayoutParams().height = wrapper.getHeight() - buttonContainer.getHeight();
+		pagerContainer.requestLayout();
 	}
 
-	public void onSectionAttached(int number) {
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			mTitle = getString(R.string.title_section3);
-			break;
-		}
-	}
+	// ////////////////////////
+	// 여기서부터 액션바와 드로어 상태 동기화 작업
+	// ////////////////////////
 
-	public void restoreActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mTitle);
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!mNavigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.my_plan, menu);
-			restoreActionBar();
-			return true;
-		}
-		return super.onCreateOptionsMenu(menu);
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		drawerToggle.onConfigurationChanged(newConfig);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (drawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this fragment.
-		 */
-		private static final String ARG_SECTION_NUMBER = "section_number";
-
-		/**
-		 * Returns a new instance of this fragment for the given section number.
-		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			Bundle args = new Bundle();
-			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_my_plan, container, false);
-			return rootView;
-		}
-
-		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			((MyPlanActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
-		}
-	}
-
 }
