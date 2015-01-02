@@ -25,8 +25,7 @@
         <LinearLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="bottom"
+            android:layout_height="50dp"
             android:orientation="horizontal" >
 
             <Button
@@ -51,11 +50,12 @@
                 android:text="@string/delete_plan_local" />
 
             <Button
-                android:id="@+id/retrieve_plan_button"
+                android:id="@+id/pull_plan_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/retrieve_plan_local" />
+                android:text="@string/pull_plan_local" />
+
             <Button
                 android:id="@+id/push_plan_button"
                 android:layout_width="0dp"

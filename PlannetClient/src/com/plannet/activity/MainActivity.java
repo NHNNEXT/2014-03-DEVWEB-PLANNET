@@ -7,7 +7,6 @@ import android.util.Log;
 import com.plannet.clientdb.uuidDAO;
 import com.plannet.http.HttpRequest;
 import com.plannet.others.PortalTimerHandler;
-import com.plannet.others.Utilities;
 
 public class MainActivity extends ActionBarActivity {
 	private String response;
@@ -27,17 +26,24 @@ public class MainActivity extends ActionBarActivity {
 			handler.execute(3000);
 		} else {
 			// uuid로 http post 요청, 서버에서 응답값 받아와서 result에 저장
-			new Thread() {
+			Thread thread = new Thread() {
 				public void run() {
 					response = HttpRequest.UUIDSignIn(uuid);
 				}
-			}.run();
-
-			if (response == "UUIDNotFound") {
+			};
+			thread.start();
+			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (response.equals("UUIDNotFound")) {
 				// 응답값이 UUIDNotFound인 경우엔 SignIn으로 보내줌
 				PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
 				handler.execute(3000);
-			} else if (response == "Success") {
+			} else if (response.equals("Success")) {
 				// 응답값이 "Success"인 경우엔 MyPlan으로 보내줌 -> 응답값 확인요망
 				PortalTimerHandler handler = new PortalTimerHandler(this, MyPlanActivity.class);
 				handler.execute(3000);

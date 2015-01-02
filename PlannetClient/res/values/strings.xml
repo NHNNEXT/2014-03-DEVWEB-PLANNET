@@ -8,7 +8,7 @@
     <string name="add_plan_local">add</string>
     <string name="edit_plan_local">edit</string>
     <string name="delete_plan_local">delete</string>
-    <string name="retrieve_plan_local">retrieve</string>
+    <string name="pull_plan_local">pull</string>
     <string name="push_plan_server">push</string>
     <string name="open_drawer_message">드로어 열림</string>
     <string name="close_drawer_message">드로어 닫힘</string>

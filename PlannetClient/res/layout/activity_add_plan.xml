@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/add_title_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="title"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/add_summary_edit"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/add_title_edit"
+        android:layout_above="@+id/add_commit_button"
+        android:gravity="left|top"
+        android:hint="summary" />
+
+    <Button
+        android:id="@+id/add_commit_button"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:text="commit"
+        android:layout_height="50dp" />
+
+</RelativeLayout>

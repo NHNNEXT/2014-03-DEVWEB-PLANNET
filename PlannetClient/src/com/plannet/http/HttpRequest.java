@@ -17,7 +17,7 @@ public class HttpRequest {
 	// conn.connect();
 
 	public static HttpURLConnection getConnection(String servletName) {
-		String servletURL = "http://10.73.39.159:8080/" + servletName;
+		String servletURL = "http://10.73.42.200:8080/" + servletName;
 
 		try {
 			URL url = new URL(servletURL);
@@ -41,7 +41,7 @@ public class HttpRequest {
 		}
 	}
 
-	public static String SignIn(String email, String password) {
+	public static String[] SignIn(String email, String password) {
 		HttpURLConnection conn = getConnection("SignIn");
 
 		User user = new User(email, password);
@@ -56,10 +56,11 @@ public class HttpRequest {
 			Log.e("SignInProxy : ", "getConnection Error!");
 		}
 
-		Log.e("SignInResult : ", conn.getHeaderField("SigninResult"));
-
+		String result = conn.getHeaderField("result"); //.conn server에서 맞춰줘야함.
 		String response = conn.getHeaderField("uuid");
-		return response;
+		String[] temp = new String[]{result, response};
+
+		return temp;
 	}
 
 	public static String UUIDSignIn(String uuid) {
@@ -75,7 +76,7 @@ public class HttpRequest {
 			Log.e("SignInProxy : ", "getConnection Error!");
 		}
 
-		String result = conn.getHeaderField("SigninResult");
+		String result = conn.getHeaderField("result");
 		Log.e("SignInResult : ", result);
 		return result;
 	}
@@ -96,7 +97,7 @@ public class HttpRequest {
 			Log.e("SignUpProxy : ", "getConnection Error!");
 		}
 
-		String response = conn.getHeaderField("SignUpResult");
+		String response = conn.getHeaderField("result");
 		return response;
 	}
 }

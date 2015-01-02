@@ -9,6 +9,10 @@ public class Plan {
 	private boolean isComplete; // in actual db, "complete"
 	private boolean isPrivate; // in actual db, "private"
 
+	public Plan(String title) {
+		this.title = title;
+	}
+	
 	public Plan(int pid, int uid, int cid, String title, String summary, boolean isComplete, boolean isPrivate) {
 		this.pid = pid;
 		this.uid = uid;

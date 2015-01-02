@@ -1,6 +1,7 @@
 package com.plannet.listener;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -14,9 +15,10 @@ public class SignInOnClickListener implements OnClickListener {
 
 	private Activity currentActivity;
 	private Class<?> targetActivity;
+	private String[] temp;
 	private String uuid;
 	private String result;
-
+	
 	public SignInOnClickListener(Activity currentActivity, Class<?> targetActivity) {
 		this.currentActivity = currentActivity;
 		this.targetActivity = targetActivity;
@@ -27,12 +29,20 @@ public class SignInOnClickListener implements OnClickListener {
 		final String email = ((EditText) currentActivity.findViewById(R.id.emailEdit)).getText().toString();
 		final String password = ((EditText) currentActivity.findViewById(R.id.passwordEdit)).getText().toString();
 
-		new Thread() {
+		Thread thread = new Thread() {
 			public void run() {
-				// 실제로 return하는 건 uuid, 여기 서버 응답값 뭐인지 수정 필수!!!
-				uuid = HttpRequest.SignIn(email, password);
+				temp = HttpRequest.SignIn(email, password);
 			};
-		}.start();
+		};
+		thread.start();
+		
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		result = temp[0];
+		uuid = temp[1];
 
 		if (result.equals("Success")) {
 			new uuidDAO(currentActivity).delete();
