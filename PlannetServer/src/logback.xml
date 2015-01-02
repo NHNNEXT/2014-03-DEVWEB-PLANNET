@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%-5level] [%logger{36}] - %m%n</Pattern>
+		</layout>
+	</appender>
+	
+<!-- 	<logger name="net.plannet.db" level="DEBUG" /> -->
+<!-- 	해당 패키지만 레벨을 따로 정할 수 있다. -->
+
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
+
+
+<!-- 
+1.trace
+2.debug
+3.info
+4.warn
+5.error 
+-->

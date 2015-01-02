@@ -1,10 +1,6 @@
 package Test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import net.plannet.db.SignUpDAO;
 import net.plannet.dbutil.QuerySet;

@@ -9,8 +9,13 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Mail {
+	private static final Logger logger = LoggerFactory.getLogger(Mail.class);
 	public static void sendMail(String email, String uuid){
+		
 		String host = "smtp.gmail.com";
 		String from = "plannetnoreply";
 		String pass = "plannet1004";
@@ -42,25 +47,20 @@ public class Mail {
 		MimeMessage message = new MimeMessage(session);
 		try {
 			message.setFrom(new InternetAddress(from));
-
 			InternetAddress[] toAddress = new InternetAddress[to.length];
 
 			// To get the array of addresses
-			for (int i = 0; i < to.length; i++) { // changed from a while loop
+			for (int i = 0; i < to.length; i++) // changed from a while loop
 				toAddress[i] = new InternetAddress(to[i]);
-			}
-			System.out.println(Message.RecipientType.TO);
-
-			for (int i = 0; i < toAddress.length; i++) { // changed from a while
-															// loop
+			for (int i = 0; i < toAddress.length; i++)
 				message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-			}
 			message.setSubject("[Plannet]이메일을 인증하여 가입을 완료해 주세요!");
 			message.setText(text, "utf-8", "html");
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, from, pass);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
+			logger.info("메일이 정상적으로 발송되었습니다. email:{} uuid:{} verifyAddress:{}", email, uuid, RequestResult.MailingRequestAddress);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

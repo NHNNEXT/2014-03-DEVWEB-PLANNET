@@ -33,12 +33,11 @@ public class SignUpDAO extends DAO{
 		closeResource();
 	}
 	
-	public User selectVerify(String uuid) {
+	public ArrayList<User> selectVerify(String uuid) {
 		String sql = "SELECT name, email, pw FROM verify WHERE uuid = ? ";
 		ArrayList<User> userList = selectQueryExecute(new QuerySet(sql, uuid), User.class);
-		User user = userList.get(0);
 		closeResource();
-		return user;
+		return userList;
 	}
 	
 	public void deleteVerify(String uuid) {
