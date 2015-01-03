@@ -35,14 +35,14 @@ public class UUIDSignInServlet extends HttpServlet {
 			ArrayList<User> userList = new SignInDAO().selectExistUUID(uuid);
 			if (userList.size() == 1) {
 				// uuid가 있을 경우 uuid에 해당하는 id/pw를 꺼내 로그인한다.
-				resp.setHeader("SigninResult", RequestResult.Success);
+				resp.setHeader("result", RequestResult.Success);
 				HttpSession session = req.getSession();
 				session.setAttribute(RequestResult.SESSION_USER_ID, userList.get(0).getUid());
 				logger.info("UUIDSignIn이 성공하였습니다.");
 				// uuid expireDate update한다. (옵션)
 			} else {
 				// uuid가 없을 경우
-				resp.setHeader("SigninResult", RequestResult.UUIDNotFound);
+				resp.setHeader("result", RequestResult.UUIDNotFound);
 				logger.info("UUIDSignIn이 실패하였습니다.");
 				// 클라에 로그인 화면으로 갈 것을 요청한다.
 			}

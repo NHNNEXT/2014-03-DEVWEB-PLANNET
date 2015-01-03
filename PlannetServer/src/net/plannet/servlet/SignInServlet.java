@@ -46,7 +46,7 @@ public class SignInServlet extends HttpServlet {
 					new SignInDAO().updateUUID(userRecord.getUid(), uuid);
 					
 					resp.setHeader("uuid", uuid);
-					resp.setHeader("SigninResult", RequestResult.Success);
+					resp.setHeader("result", RequestResult.Success);
 					logger.info("SignIn이 성공적으로 완료되었습니다. 발급UUID:{}", uuid);
 					HttpSession session = req.getSession();
 					session.setAttribute(RequestResult.SESSION_USER_ID, userRecord.getUid());
@@ -54,7 +54,7 @@ public class SignInServlet extends HttpServlet {
 				// }else if(){
 				} else {
 					// 실패했을 경우
-					resp.setHeader("SigninResult", RequestResult.Fail);
+					resp.setHeader("result", RequestResult.Fail);
 					logger.info("SignIn에 실패하였습니다.");
 					// id가 없을 경우에 대한 예외처리 (옵션)
 					// pw가 없을 경우에 대한 예외처리 (옵션)

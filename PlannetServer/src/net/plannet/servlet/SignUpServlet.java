@@ -42,7 +42,7 @@ public class SignUpServlet extends HttpServlet {
 				String uuid = new UUIDControl().createUUID();
 				// verify table에 정보 저장
 				new SignUpDAO().addVerify(user, uuid);
-				resp.setHeader("SignUpResult", RequestResult.Success);
+				resp.setHeader("result", RequestResult.Success);
 				logger.info("정상적으로 SignUp대기상태에 진입하였습니다.");
 
 				// 이메일 발송
@@ -50,7 +50,7 @@ public class SignUpServlet extends HttpServlet {
 
 			} else {
 				// 이미 존재하는 이메일일 경우 에러처리
-				resp.setHeader("SignUpResult", RequestResult.EmailOverlap);
+				resp.setHeader("result", RequestResult.EmailOverlap);
 				logger.info("SignUp에 실패하였습니다.");
 			}
 		} catch (Exception e) {
