@@ -5,6 +5,7 @@ import java.net.URL;
 
 import android.util.Log;
 
+import com.plannet.model.Plan;
 import com.plannet.model.User;
 import com.plannet.others.Utilities;
 
@@ -17,7 +18,7 @@ public class HttpRequest {
 	// conn.connect();
 
 	public static HttpURLConnection getConnection(String servletName) {
-		String servletURL = "http://10.73.42.200:8080/" + servletName;
+		String servletURL = "http://10.73.39.159:8080/" + servletName;
 
 		try {
 			URL url = new URL(servletURL);
@@ -36,7 +37,7 @@ public class HttpRequest {
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("Proxy : ", "getConnection Error");
+			Log.e("getConnection : ", "Error!");
 			return null;
 		}
 	}
@@ -53,27 +54,28 @@ public class HttpRequest {
 			Log.e("SignInProxy : ", "" + conn.getResponseCode());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("SignInProxy : ", "getConnection Error!");
+			Log.e("SignInProxy : ", "Connection Error!");
 		}
 
-		String result = conn.getHeaderField("result"); //.conn server에서 맞춰줘야함.
-		String response = conn.getHeaderField("uuid");
-		String[] temp = new String[]{result, response};
+		String result = conn.getHeaderField("result");
+		String uuid = conn.getHeaderField("uuid");
+		String[] response = new String[] { result, uuid };
 
-		return temp;
+		return response;
 	}
 
 	public static String UUIDSignIn(String uuid) {
 		HttpURLConnection conn = getConnection("UUIDSignIn");
 
-		conn.addRequestProperty("uuid", uuid); // setRequestProperty 같은 key 값 있을 경우 덮어쓸건지 안쓸건지 차이
+		conn.addRequestProperty("uuid", uuid);
+		// setRequestProperty와 차이점 : 같은 key 값 있을 경우 덮어쓸건지 안쓸건지
 
 		try {
 			conn.connect();
 			Log.e("SignInProxy : ", "" + conn.getResponseCode());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("SignInProxy : ", "getConnection Error!");
+			Log.e("SignInProxy : ", "Connection Error!");
 		}
 
 		String result = conn.getHeaderField("result");
@@ -94,7 +96,26 @@ public class HttpRequest {
 			Log.e("SignUpProxy : ", "" + conn.getResponseCode());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("SignUpProxy : ", "getConnection Error!");
+			Log.e("SignUpProxy : ", "Connection Error!");
+		}
+
+		String response = conn.getHeaderField("result");
+		return response;
+	}
+
+	public static String PushPlan(int cid, String title, String summary) {
+		HttpURLConnection conn = getConnection("PushPlan");
+
+		Plan plan = new Plan(cid, title, summary);
+		String planJson = Utilities.GsonConvertToString(plan);
+		Utilities.setRequestBody(conn, planJson);
+
+		try {
+			conn.connect();
+			Log.e("PushPlanProxy : ", "" + conn.getResponseCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("PushPlanProxy : ", "Connection Error!");
 		}
 
 		String response = conn.getHeaderField("result");

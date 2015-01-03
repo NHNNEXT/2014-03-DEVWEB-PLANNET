@@ -49,8 +49,8 @@ public class SignUpOnClickListener implements OnClickListener {
 				Log.e("SignUp", result);
 			};
 		};
-
 		thread.start();
+		
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
@@ -66,8 +66,7 @@ public class SignUpOnClickListener implements OnClickListener {
 			Utilities.toastPopUp(currentActivity, "회원가입을 축하합니다!");
 			PortalTimerHandler handler = new PortalTimerHandler(currentActivity, targetActivity);
 			handler.execute(3000);
+			return;
 		}
-
-		return;
 	}
 }

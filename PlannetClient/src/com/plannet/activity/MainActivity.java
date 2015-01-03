@@ -7,6 +7,7 @@ import android.util.Log;
 import com.plannet.clientdb.uuidDAO;
 import com.plannet.http.HttpRequest;
 import com.plannet.others.PortalTimerHandler;
+import com.plannet.others.Utilities;
 
 public class MainActivity extends ActionBarActivity {
 	private String response;
@@ -15,7 +16,13 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
+		Utilities.moveToAnotherActivity(this, MyPlanActivity.class);
+
+		// ////////////////////////
+		// 여기서부터 uuid로 로그인, 저장된 것이 없거나 실패시 sign in으로 이동
+		// ////////////////////////
+
 		final String uuid = new uuidDAO(this).select();
 		Log.e("uuid", "현재 uuid : " + uuid);
 
@@ -31,48 +38,23 @@ public class MainActivity extends ActionBarActivity {
 					response = HttpRequest.UUIDSignIn(uuid);
 				}
 			};
+
 			thread.start();
-			
 			try {
-				thread.join();
+				thread.join(); // 요청 완료될 때까지 기다려준다
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (response.equals("UUIDNotFound")) {
 				// 응답값이 UUIDNotFound인 경우엔 SignIn으로 보내줌
 				PortalTimerHandler handler = new PortalTimerHandler(this, SignInActivity.class);
 				handler.execute(3000);
 			} else if (response.equals("Success")) {
-				// 응답값이 "Success"인 경우엔 MyPlan으로 보내줌 -> 응답값 확인요망
+				// 응답값이 "Success"인 경우엔 MyPlan으로 보내줌
 				PortalTimerHandler handler = new PortalTimerHandler(this, MyPlanActivity.class);
 				handler.execute(3000);
 			}
 		}
-
-		// TODO:: TEST용 로직 맞춰서 다른 코드들 바꾸기
-
-		// ### TEST용 코드
-		// final Context context = this;
-		// new Thread() {
-		// public void run() {
-
-		// Sign Up
-		// HttpRequest.SignUp("333eplan@gmail.com", "고예찬", "wow2000");
-
-		// Sign In with email, pw
-		// String uuid = HttpRequest.SignIn("333eplan@gmail.com", "wow2000");
-		// new uuidDAO(context).delete();
-		// new uuidDAO(context).insert(uuid);
-
-		// Sign In with uuid
-		// String uuidFromDB = new uuidDAO(context).select();
-		// Log.e("uuid after select:", uuidFromDB);
-		// String responseResult = HttpRequest.UUIDSignIn(uuidFromDB);
-		// if(responseResult == ){
-		//
-		// }
-		// };
-		// }.start();
 	}
 }

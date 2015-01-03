@@ -19,18 +19,26 @@ import com.google.gson.GsonBuilder;
 
 public class Utilities {
 
-	public static void addPortalToButton(View Button, Activity currentActivity, Class<?> targetActivity) {
+	public static void addPortalToButton(View Button, Activity currentActivity, Class<?> targetActivity,
+			Object... putExtras) {
 		Button button = (Button) Button;
-		PortalOnClickListener listener = new PortalOnClickListener(currentActivity, targetActivity);
+		PortalOnClickListener listener = new PortalOnClickListener(currentActivity, targetActivity, putExtras);
 		button.setOnClickListener(listener);
 	}
 
-	public static void CheckRegisterButton(View Button, Activity currentActivity, Class<?> targetActivity) {
-		// Button button = (Button) Button;
-	}
-
-	public static void moveToAnotherActivity(Activity currentActivity, Class<?> targetActivity) {
+	public static void moveToAnotherActivity(Activity currentActivity, Class<?> targetActivity, Object... putExtras) {
 		Intent intent = new Intent(currentActivity, targetActivity);
+
+		for (int i = 0; i < putExtras.length; i += 2) {
+			Object key = putExtras[i];
+			Object value = putExtras[i + 1];
+			if (value instanceof Integer) {
+				intent.putExtra((String) key, (Integer) value);
+			} else if (value instanceof String) {
+				intent.putExtra((String) key, (String) value);
+			}
+		}
+
 		currentActivity.startActivity(intent);
 	}
 

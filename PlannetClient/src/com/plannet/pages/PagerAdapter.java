@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,14 +18,13 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 // PagerAdapter는 이것들을 통합관리해줌
 
 public class PagerAdapter extends FragmentPagerAdapter implements TabListener, OnPageChangeListener {
-	private final Context context;
 	private final ActionBar tabActionBar;
 	private final ViewPager pager;
 	private final ArrayList<TabInfo> tabInfoList = new ArrayList<TabInfo>();
 
 	// TabInfo 내부 클래스 - 각각의 탭에 대한 fragment 클래스 정보를 담아둠
 	static final class TabInfo {
-		private final Class<?> targetClass;
+		final Class<?> targetClass;
 
 		TabInfo(Class<?> targetClass) {
 			this.targetClass = targetClass;
@@ -35,7 +33,6 @@ public class PagerAdapter extends FragmentPagerAdapter implements TabListener, O
 
 	public PagerAdapter(FragmentActivity activity, ViewPager pager) {
 		super(activity.getSupportFragmentManager());
-		this.context = activity;
 		this.pager = pager;
 		this.tabActionBar = activity.getActionBar();
 
@@ -43,9 +40,10 @@ public class PagerAdapter extends FragmentPagerAdapter implements TabListener, O
 		this.pager.setOnPageChangeListener(this);
 	}
 
-	public void addTab(ActionBar.Tab tab, Class<?> targetClass) {
+	public void addTab(ActionBar.Tab tab, Class<?> targetClass, int cid) {
 		TabInfo tabInfo = new TabInfo(targetClass);
 		tab.setTabListener(this); // PagerAdapter를 탭 리스너로 지정해줌
+		tab.setTag(cid); // 각각의 탭의 태그 정보 안에 cid를 넣어줌
 
 		int tabNumber = tabInfoList.size(); // 들어있는 탭 개수가 새롭게 들어갈 탭의 번호가 됨
 		// 추가설명: 추가된 탭이 하나도 없었다면 새로 들어갈 탭의 번호는 0번이다
@@ -78,9 +76,10 @@ public class PagerAdapter extends FragmentPagerAdapter implements TabListener, O
 	}
 
 	@Override
-	public Fragment getItem(int tabNumber) {
-		// 탭에서의 fragment 위치를 넣어주면 fragment를 인스턴스로 만들어서 반환
-		return Fragment.instantiate(context, tabInfoList.get(tabNumber).targetClass.getName());
+	public Fragment getItem(int position) {
+		// 페이저 각각의 위치에 대해 fragment를 인스턴스로 생성해줌
+		int cid = (Integer) tabActionBar.getTabAt(position).getTag(); // 여기에서 cid 추출해서 ModelFragment 생성할 때 넣어준다
+		return new ModelFragment(cid);
 	}
 
 	// ////////////////////////
@@ -89,7 +88,7 @@ public class PagerAdapter extends FragmentPagerAdapter implements TabListener, O
 
 	@Override
 	public void onPageSelected(int position) {
-		// 페이지가 선택되었을 때 해당 위치 탭을 선택되었다고 파란색으로 표현해줌
+		// 페이지가 선택되었을 때 해당 위치 탭을 선택되었다고 파란색으로 표현해준다
 		tabActionBar.setSelectedNavigationItem(position);
 	}
 

@@ -1,28 +1,24 @@
 package com.plannet.activity;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.plannet.listener.DrawerListItemOnClickListener;
-import com.plannet.pages.PageFragment1;
+import com.plannet.others.CurrentPageCidStore;
+import com.plannet.others.Utilities;
+import com.plannet.pages.ModelFragment;
 import com.plannet.pages.PagerAdapter;
 
-public class MyPlanActivity extends FragmentActivity implements OnClickListener{
+public class MyPlanActivity extends FragmentActivity {
 	private String[] navItems;
 	private ListView drawerNavList;
 	private DrawerLayout drawerLayout;
@@ -58,7 +54,6 @@ public class MyPlanActivity extends FragmentActivity implements OnClickListener{
 				R.string.open_drawer_message, R.string.close_drawer_message);
 		drawerLayout.setDrawerListener(drawerToggle); // 드로어와 액션바 토글을 연결
 		tabActionBar.setDisplayHomeAsUpEnabled(true);
-		// tabActionBar.setTitle("my plan");
 
 		// ////////////////////////
 		// 여기서부터 페이저
@@ -68,63 +63,39 @@ public class MyPlanActivity extends FragmentActivity implements OnClickListener{
 		pagerContainer = (LinearLayout) findViewById(R.id.pager_container);
 		pager = new ViewPager(this);
 		pager.setId(1); // view의 아이디 꼭 필요함
+		pager.setOffscreenPageLimit(10); // 양옆으로 파괴안하고 유지할 fragment 개수
 		pagerContainer.addView(pager);// LinearLayout의 자식으로 ViewPager를 넣어줌
 
 		pagerAdapter = new PagerAdapter(this, pager); // pagerAdapter 클래스에 있는 설명 참고
 		tabActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Now"), PageFragment1.class);
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Later"), PageFragment1.class);
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Done"), PageFragment1.class);
-		
-		findViewById(R.id.add_plan_button).setOnClickListener(this) ;
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Now"), ModelFragment.class, 1); // 맨 마지막 것이 cid
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Later"), ModelFragment.class, 2);
+		pagerAdapter.addTab(tabActionBar.newTab().setText("Done"), ModelFragment.class, 3);
+
+		// ////////////////////////
+		// 여기서부터 버튼 리스너 추가
+		// ////////////////////////
+
+		Utilities.addPortalToButton(findViewById(R.id.add_plan_button), this, AddPlanActivity.class);
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		// 뷰가 생성되는 시점에 pager height 크기 설정해주기 = wrapper height - button height
+		// 주의! : 이 부분 매번 페이지 옮겨갈 때마다 뷰 생성되면서 실행됨
 		LinearLayout wrapper = (LinearLayout) findViewById(R.id.wrapper);
 		LinearLayout buttonContainer = (LinearLayout) findViewById(R.id.button_container);
-
-		Log.e("wrapper pixel height", "" + wrapper.getHeight());
-		Log.e("button layout pixel height", "" + buttonContainer.getHeight());
-
 		pagerContainer.getLayoutParams().height = wrapper.getHeight() - buttonContainer.getHeight();
 		pagerContainer.requestLayout();
+
+		CurrentPageCidStore.setCurrentPageCid((Integer) tabActionBar.getTabAt(pager.getCurrentItem()).getTag());
+		// 페이지가 바뀔때마다 currentPageCid 정보를 갱신해준다
 	}
 
 	// ////////////////////////
 	// 여기서부터 액션바와 드로어 상태 동기화 작업
 	// ////////////////////////
-	
-	@Override
-	public void onClick(View v) {
-		int viewId = v.getId();
-		switch (viewId) {
-		case R.id.add_plan_button:
-			Intent intent = new Intent(this, AddActivity.class);
-			startActivityForResult(intent, ReqCode.ADD_PLAN);
-			break;
 
-		default:
-			break;
-		}
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case ReqCode.ADD_PLAN:
-			String title = data.getStringExtra("title");
-			Toast.makeText(this, title, Toast.LENGTH_LONG).show();
-			break;
-
-		default:
-			break;
-		}
-		
-	}
-	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
