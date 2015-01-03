@@ -15,6 +15,7 @@ import net.plannet.model.Plan;
 import net.plannet.model.User;
 import net.plannet.util.ErrorUtil;
 import net.plannet.util.GsonUtil;
+import net.plannet.util.RequestResult;
 
 @WebServlet("/PullPlan")
 public class PullPlanServlet extends HttpServlet {
@@ -24,10 +25,11 @@ public class PullPlanServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			GsonUtil.getObjectFromRequest(req, User.class);
-			ArrayList<Plan> planList = new PlanDAO().pullAllPlans();
+			//Server --> Client
+			User user = GsonUtil.getObjectFromRequest(req, User.class);
+			ArrayList<Plan> planList = new PlanDAO().pullAllPlans(user);
 			GsonUtil.writeObjectOnResponse(resp, planList);
-			logger.info("전체플랜 전송완료. 전송된 플랜:{}개", planList.size());
+			logger.info("전체플랜 전송완료. User:{} 전송된 플랜:{}개",user.getEmail(), planList.size());
 			
 		} catch (Exception e) {
 			ErrorUtil.printError("PullPlanServlet Failed", e);
