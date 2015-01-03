@@ -6,6 +6,7 @@ public class RequestResult {
 	
 	//LogIn
 	public final static String EmailNotFound = "EmailNotFound";
+	public final static String EmailNotVerified = "EmailNotVerified";
 	public final static String PasswordDismatch = "PasswordDismatch";
 	public final static String UUIDNotFound = "UUIDNotFound";
 	
