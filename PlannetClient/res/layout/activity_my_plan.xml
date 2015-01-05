@@ -9,11 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:id="@+id/pager_container"
@@ -22,48 +21,19 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/button_container"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/add_plan_button"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/add_plan_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/add_plan_local" />
-
-            <Button
-                android:id="@+id/edit_plan_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/edit_plan_local" />
-
-            <Button
-                android:id="@+id/delete_plan_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/delete_plan_local" />
-
-            <Button
-                android:id="@+id/pull_plan_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/pull_plan_local" />
-
-            <Button
-                android:id="@+id/push_plan_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/push_plan_server" />
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/add_button_shape"
+            android:text="@string/add_plan_local"
+            android:textColor="#FFFFFF"
+            android:textSize="35dp" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/drawer_nav_list"

@@ -15,9 +15,13 @@ import com.plannet.model.Plan;
 
 public class PlanAdapter extends ArrayAdapter<Plan> {
 
-	Context context;
-	int layoutResourceId;
-	ArrayList<Plan> planList;
+	private Context context;
+	private int layoutResourceId;
+	private ArrayList<Plan> planList;
+
+	public ArrayList<Plan> getPlanList() {
+		return planList;
+	}
 
 	public PlanAdapter(Context context, int resource, ArrayList<Plan> objects) {
 		super(context, resource, objects);

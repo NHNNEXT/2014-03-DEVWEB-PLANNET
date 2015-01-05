@@ -29,7 +29,7 @@ public class PlanDAO extends AbstractDAO {
 
 		return db.insert("plan", null, cv);
 	}
-	
+
 	public long insert(int cid, String title, String summary) {
 		db = helper.getWritableDatabase();
 		cv = new ContentValues();
@@ -41,7 +41,8 @@ public class PlanDAO extends AbstractDAO {
 		return db.insert("plan", null, cv);
 	}
 
-	public int update(int pid, int uid, int cid, String title, String summary, boolean isComplete, boolean isPrivate) {
+	public int update(int targetPid, int uid, int cid, String title, String summary, boolean isComplete,
+			boolean isPrivate) {
 		db = helper.getWritableDatabase();
 		cv = new ContentValues();
 
@@ -52,7 +53,17 @@ public class PlanDAO extends AbstractDAO {
 		cv.put("complete", isComplete);
 		cv.put("private", isPrivate);
 
-		return db.update("plan", cv, "pid=?", new String[] { Integer.toString(pid) });
+		return db.update("plan", cv, "pid=?", new String[] { Integer.toString(targetPid) });
+	}
+
+	public int update(int targetPid, String title, String summary) {
+		db = helper.getWritableDatabase();
+		cv = new ContentValues();
+
+		cv.put("title", title);
+		cv.put("summary", summary);
+
+		return db.update("plan", cv, "pid=?", new String[] { Integer.toString(targetPid) });
 	}
 
 	public ArrayList<Plan> select() {
@@ -82,6 +93,7 @@ public class PlanDAO extends AbstractDAO {
 		ArrayList<Plan> result = new ArrayList<Plan>();
 		db = helper.getReadableDatabase();
 		Cursor c = db.query("plan", columns, "cid=?", params, null, null, null);
+		// 마지막 parameter로 "pid DESC" 넣어주면 역순으로 출력됨
 
 		while (c.moveToNext()) {
 			int pid = c.getInt(c.getColumnIndex("pid"));
@@ -101,11 +113,6 @@ public class PlanDAO extends AbstractDAO {
 
 	public long delete(int pid) {
 		db = helper.getWritableDatabase();
-
 		return db.delete("plan", "pid=?", new String[] { Integer.toString(pid) });
 	}
-
-	// 내장 db 작업 -> method 만들어놓기
-	// add, edit, delete, sync(push), retrieve(카테고리 탭했을 때)
-
 }

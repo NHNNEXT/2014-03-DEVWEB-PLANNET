@@ -13,18 +13,26 @@ import com.plannet.http.HttpRequest;
 import com.plannet.others.CurrentPageCidStore;
 import com.plannet.others.Utilities;
 
-public class AddPlanActivity extends Activity implements OnClickListener {
+public class EditPlanActivity extends Activity implements OnClickListener {
 	private EditText titleEdit;
 	private EditText summaryEdit;
 	private Button button;
+
+	private int targetPid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_plan);
 
+		targetPid = getIntent().getIntExtra("pid", 0);
+
 		titleEdit = (EditText) findViewById(R.id.add_plan_title_edit);
 		summaryEdit = (EditText) findViewById(R.id.add_plan_summary_edit);
+		// 원래 있던 걸로 내용 초기화해준다
+		titleEdit.setText(getIntent().getStringExtra("title"));
+		summaryEdit.setText(getIntent().getStringExtra("summary"));
+
 		button = (Button) findViewById(R.id.add_plan_ok_button);
 		button.setOnClickListener(this);
 	}
@@ -35,14 +43,14 @@ public class AddPlanActivity extends Activity implements OnClickListener {
 		final String title = titleEdit.getText().toString();
 		final String summary = summaryEdit.getText().toString();
 
-		Log.e("add plan : ", cid + "   " + title + "   " + summary);
+		Log.e("edit plan : ", cid + "   " + title + "   " + summary);
 
 		if (title.isEmpty()) {
 			Utilities.toastPopUp(this, "제목을 입력해주세요!");
 			return;
 		}
 
-		new PlanDAO(this).insert(cid, title, summary);
+		new PlanDAO(this).update(targetPid, title, summary);
 
 		new Thread() {
 			public void run() {

@@ -63,7 +63,7 @@ public class MyPlanActivity extends FragmentActivity {
 		pagerContainer = (LinearLayout) findViewById(R.id.pager_container);
 		pager = new ViewPager(this);
 		pager.setId(1); // view의 아이디 꼭 필요함
-		pager.setOffscreenPageLimit(10); // 양옆으로 파괴안하고 유지할 fragment 개수
+		pager.setOffscreenPageLimit(10); // 양옆으로 파괴 안하고 유지할 fragment 개수
 		pagerContainer.addView(pager);// LinearLayout의 자식으로 ViewPager를 넣어줌
 
 		pagerAdapter = new PagerAdapter(this, pager); // pagerAdapter 클래스에 있는 설명 참고
@@ -81,13 +81,7 @@ public class MyPlanActivity extends FragmentActivity {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		// 뷰가 생성되는 시점에 pager height 크기 설정해주기 = wrapper height - button height
 		// 주의! : 이 부분 매번 페이지 옮겨갈 때마다 뷰 생성되면서 실행됨
-		LinearLayout wrapper = (LinearLayout) findViewById(R.id.wrapper);
-		LinearLayout buttonContainer = (LinearLayout) findViewById(R.id.button_container);
-		pagerContainer.getLayoutParams().height = wrapper.getHeight() - buttonContainer.getHeight();
-		pagerContainer.requestLayout();
-
 		CurrentPageCidStore.setCurrentPageCid((Integer) tabActionBar.getTabAt(pager.getCurrentItem()).getTag());
 		// 페이지가 바뀔때마다 currentPageCid 정보를 갱신해준다
 	}
