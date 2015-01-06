@@ -51,4 +51,10 @@ public class SignInDAO extends DAO{
 		closeResource();
 	}
 	
+	public void deleteUUID(int uid) {
+		String sql = "UPDATE user SET uuid = 'default' WHERE uid = ?";
+		nonSelectQueryExecute(new QuerySet(sql, uid));
+		closeResource();
+	}
+	
 }
