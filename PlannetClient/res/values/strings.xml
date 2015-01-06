@@ -15,6 +15,7 @@
         <item>My Plan</item>
         <item>Following</item>
         <item>Find</item>
+        <item>Logout</item>
     </string-array>
 
 </resources>

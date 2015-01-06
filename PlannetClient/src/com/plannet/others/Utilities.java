@@ -27,13 +27,15 @@ public class Utilities {
 	public static void moveToAnotherActivity(Activity currentActivity, Class<?> targetActivity, Object... putExtras) {
 		Intent intent = new Intent(currentActivity, targetActivity);
 
-		for (int i = 0; i < putExtras.length; i += 2) {
-			Object key = putExtras[i];
-			Object value = putExtras[i + 1];
-			if (value instanceof Integer) {
-				intent.putExtra((String) key, (Integer) value);
-			} else if (value instanceof String) {
-				intent.putExtra((String) key, (String) value);
+		if (putExtras != null) {
+			for (int i = 0; i < putExtras.length; i += 2) {
+				Object key = putExtras[i];
+				Object value = putExtras[i + 1];
+				if (value instanceof Integer) {
+					intent.putExtra((String) key, (Integer) value);
+				} else if (value instanceof String) {
+					intent.putExtra((String) key, (String) value);
+				}
 			}
 		}
 

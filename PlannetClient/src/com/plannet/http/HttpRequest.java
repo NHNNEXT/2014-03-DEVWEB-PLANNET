@@ -1,5 +1,6 @@
 package com.plannet.http;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -34,6 +35,17 @@ public class HttpRequest {
 			e.printStackTrace();
 			Log.e("getConnection : ", "Error!");
 			return null;
+		}
+	}
+	
+	public static void Logout() {
+		HttpURLConnection conn = getConnection("Logout");
+		try {
+			conn.connect();
+			int status = conn.getResponseCode();
+			Log.i("Logout", status+"");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

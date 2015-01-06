@@ -53,7 +53,7 @@ public class MyPlanActivity extends FragmentActivity {
 		// 드로어 네비게이션 리스트 내용 설정
 		drawerNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
 		// 드로어 아이템 클릭 리스너 설정
-		drawerNavList.setOnItemClickListener(new DrawerListItemOnClickListener(drawerLayout));
+		drawerNavList.setOnItemClickListener(new DrawerListItemOnClickListener(drawerLayout, this));
 		// 액션바 초기화
 		tabActionBar = getActionBar();
 		// 액션바와 드로어를 연결 시켜주는 토글
