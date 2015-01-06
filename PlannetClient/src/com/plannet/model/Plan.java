@@ -6,8 +6,8 @@ public class Plan {
 	private int cid;
 	private String title;
 	private String summary;
-	private boolean isComplete; // in actual db, "complete"
-	private boolean isPrivate; // in actual db, "private"
+	private boolean iscomplete; // in actual db, "complete"
+	private boolean isprivate; // in actual db, "private"
 
 	public Plan(int cid, String title, String summary) {
 		this.cid = cid;
@@ -21,8 +21,8 @@ public class Plan {
 		this.cid = cid;
 		this.title = title;
 		this.summary = summary;
-		this.isComplete = isComplete;
-		this.isPrivate = isPrivate;
+		this.iscomplete = isComplete;
+		this.isprivate = isPrivate;
 	}
 
 	public int getPid() {
@@ -66,18 +66,18 @@ public class Plan {
 	}
 
 	public boolean isComplete() {
-		return isComplete;
+		return iscomplete;
 	}
 
 	public void setComplete(boolean isComplete) {
-		this.isComplete = isComplete;
+		this.iscomplete = isComplete;
 	}
 
 	public boolean isPrivate() {
-		return isPrivate;
+		return isprivate;
 	}
 
 	public void setPrivate(boolean isPrivate) {
-		this.isPrivate = isPrivate;
+		this.isprivate = isPrivate;
 	}
 }

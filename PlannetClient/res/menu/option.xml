@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.plannet.activity.OptionActivity" >
+    
+    <item
+        android:id="@+id/createCategory"
+        android:orderInCategory="1"
+        android:title="@string/category_create"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/editCategory"
+        android:orderInCategory="2"
+        android:title="@string/category_edit"
+        app:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/deleteCategory"
+        android:orderInCategory="3"
+        android:title="@string/category_delete"
+        app:showAsAction="never"/>
+</menu>
+

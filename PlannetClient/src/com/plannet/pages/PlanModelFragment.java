@@ -13,27 +13,28 @@ import android.widget.ListView;
 
 import com.plannet.activity.EditPlanActivity;
 import com.plannet.activity.R;
+import com.plannet.activity.SubplanActivity;
 import com.plannet.clientdb.PlanDAO;
 import com.plannet.model.Plan;
 import com.plannet.others.Utilities;
 
-public class ModelFragment extends Fragment implements PopUpFragment.OnPopUpListener {
+public class PlanModelFragment extends Fragment implements PopUpFragment.OnPopUpListener {
 	private PlanAdapter adapter;
-	private int categoryId;
+	private int cid;
 
-	public ModelFragment(int categoryId) {
-		this.categoryId = categoryId;
+	public PlanModelFragment(int cid) {
+		this.cid = cid;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.model_page_fragment, container, false);
+		return inflater.inflate(R.layout.plan_model_page_fragment, container, false);
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		ArrayList<Plan> planList = new PlanDAO(getActivity()).selectByCategory(categoryId);
+	public void onResume() {
+		super.onResume();
+		ArrayList<Plan> planList = new PlanDAO(getActivity()).selectByCid(cid);
 		// Collections.reverse(planList); 이렇게 해도 역순으로 출력 가능하다
 		adapter = new PlanAdapter(getActivity(), R.layout.plan_listview_item, planList);
 		ListView listView = (ListView) getView().findViewById(R.id.plan_listview);
@@ -45,9 +46,18 @@ public class ModelFragment extends Fragment implements PopUpFragment.OnPopUpList
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 				String title = adapter.getItem(i).getTitle();
 				PopUpFragment popUp = new PopUpFragment(i, title);
-				popUp.setOnPopUpListener(ModelFragment.this); // 구현한 팝업 리스너를 넣어줌
+				popUp.setOnPopUpListener(PlanModelFragment.this); // 구현한 팝업 리스너를 넣어줌
 				popUp.show(getFragmentManager(), "PlanLongClickPopUp");
 				return true;
+			}
+		});
+
+		// 숏클릭 리스너 추가
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Utilities.moveToAnotherActivity(PlanModelFragment.this.getActivity(), SubplanActivity.class, "pid",
+						adapter.getItem(i).getPid());
 			}
 		});
 	}

@@ -12,6 +12,8 @@ public class SignUpActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_up);
+		
+		getActionBar().hide();
 
 		Button signUpButton = (Button) findViewById(R.id.signUpButton);
 		signUpButton.setOnClickListener(new SignUpOnClickListener(this, SignInActivity.class));

@@ -8,14 +8,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.plannet.clientdb.PlanDAO;
+import com.plannet.clientdb.SubplanDAO;
 import com.plannet.http.HttpRequest;
-import com.plannet.others.GlobalVariables;
 import com.plannet.others.Utilities;
 
-public class AddPlanActivity extends Activity implements OnClickListener {
+public class AddSubplanActivity extends Activity implements OnClickListener {
 	private EditText titleEdit;
 	private EditText summaryEdit;
+	private EditText percentEdit;
 	private Button button;
 
 	private String[] response;
@@ -23,46 +23,49 @@ public class AddPlanActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_plan);
+		setContentView(R.layout.activity_add_subplan);
 
-		titleEdit = (EditText) findViewById(R.id.add_plan_title_edit);
-		summaryEdit = (EditText) findViewById(R.id.add_plan_summary_edit);
-		button = (Button) findViewById(R.id.add_plan_ok_button);
+		titleEdit = (EditText) findViewById(R.id.add_subplan_title_edit);
+		summaryEdit = (EditText) findViewById(R.id.add_subplan_summary_edit);
+		percentEdit = (EditText) findViewById(R.id.add_subplan_percent_edit);
+		button = (Button) findViewById(R.id.add_subplan_ok_button);
+
 		button.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		final int cid = GlobalVariables.getCurrentPageCid();
+		final int pid = getIntent().getIntExtra("pid", 0);
 		final String title = titleEdit.getText().toString();
 		final String summary = summaryEdit.getText().toString();
+		final int percent = Integer.parseInt(percentEdit.getText().toString());
 
-		Log.e("add plan : ", cid + "   " + title + "   " + summary);
+		Log.e("add subplan : ", pid + "   " + title + "   " + summary + "   " + percent);
 
 		if (title.isEmpty()) {
 			Utilities.toastPopUp(this, "제목을 입력해주세요!");
 			return;
 		}
 
-		int oldPid = (int) new PlanDAO(this).insert(cid, title, summary); // 반환값이 rowId인데 이게 바로 pid이다
+		int oldSubpid = (int) new SubplanDAO(this).insert(pid, title, summary, percent);
 
 		// Thread thread = new Thread() {
 		// public void run() {
-		// response = HttpRequest.PushPlan(cid, title, summary);
+		// response = HttpRequest.PushSubplan(pid, title, summary, percent); // result 받아와서 처리해줘야 한다 // PushSubplan
 		// }
 		// };
 		// thread.start();
 		//
 		// try {
-		// thread.join(1000);
+		// thread.join();
 		// } catch (InterruptedException e) {
 		// e.printStackTrace();
 		// }
 		//
 		// // String result = response[0]; // 응답값에 따라 처리해주기
-		// int newPid = Integer.parseInt(response[1]);
-		// new PlanDAO(this).update(oldPid, newPid);
+		// int newSubpid = Integer.parseInt(response[1]);
+		// new SubplanDAO(this).update(oldSubpid, newSubpid);
 
-		Utilities.moveToAnotherActivity(this, MyPlanActivity.class);
+		Utilities.moveToAnotherActivity(this, SubplanActivity.class, "pid", pid);
 	}
 }

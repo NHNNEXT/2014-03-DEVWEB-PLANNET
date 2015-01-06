@@ -1,4 +1,4 @@
-package com.plannet.pages;
+package com.plannet.subplan;
 
 import java.util.ArrayList;
 
@@ -11,23 +11,23 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.plannet.activity.R;
-import com.plannet.model.Plan;
+import com.plannet.model.Subplan;
 
-public class PlanAdapter extends ArrayAdapter<Plan> {
+public class SubplanAdapter extends ArrayAdapter<Subplan> {
 
 	private Context context;
 	private int layoutResourceId;
-	private ArrayList<Plan> planList;
+	private ArrayList<Subplan> subplanList;
 
-	public ArrayList<Plan> getPlanList() {
-		return planList;
+	public ArrayList<Subplan> getSubplanList() {
+		return subplanList;
 	}
 
-	public PlanAdapter(Context context, int resource, ArrayList<Plan> objects) {
+	public SubplanAdapter(Context context, int resource, ArrayList<Subplan> objects) {
 		super(context, resource, objects);
 		this.context = context;
 		this.layoutResourceId = resource;
-		this.planList = objects;
+		this.subplanList = objects;
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class PlanAdapter extends ArrayAdapter<Plan> {
 			row = inflator.inflate(layoutResourceId, parent, false);
 		}
 
-		TextView title = (TextView) row.findViewById(R.id.plan_title);
-		title.setText(planList.get(position).getTitle());
+		TextView title = (TextView) row.findViewById(R.id.subplan_title);
+		title.setText(subplanList.get(position).getTitle());
 
 		return row;
 	}

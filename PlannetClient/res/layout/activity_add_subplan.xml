@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/add_plan_title_edit"
+        android:id="@+id/add_subplan_title_edit"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:hint="title"
@@ -15,19 +15,31 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/add_plan_summary_edit"
+        android:id="@+id/add_subplan_percent_edit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/add_plan_ok_button"
-        android:layout_below="@+id/add_plan_title_edit"
-        android:gravity="top"
-        android:hint="summary"
+        android:layout_height="40dp"
+        android:layout_below="@+id/add_subplan_title_edit"
+        android:hint="percent"
+        android:inputType="number"
         android:textColor="#FFF"
         android:textColorHint="#8F97B7"
         android:textSize="20sp" />
 
+    <EditText
+        android:id="@+id/add_subplan_summary_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/add_subplan_ok_button"
+        android:layout_below="@+id/add_subplan_percent_edit"
+        android:gravity="top"
+        android:hint="summary"
+        android:textColor="#FFF"
+        android:textColorHint="#8F97B7"
+        android:textSize="20sp" >
+    </EditText>
+
     <Button
-        android:id="@+id/add_plan_ok_button"
+        android:id="@+id/add_subplan_ok_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"

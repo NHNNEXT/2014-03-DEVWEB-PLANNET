@@ -1,5 +1,7 @@
 package com.plannet.activity;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,15 +9,20 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.plannet.category.CreateCategoryPopUp;
+import com.plannet.category.DeleteCategoryPopUp;
+import com.plannet.category.EditCategoryPopUp;
+import com.plannet.clientdb.CategoryDAO;
 import com.plannet.listener.DrawerListItemOnClickListener;
-import com.plannet.others.CurrentPageCidStore;
+import com.plannet.model.Category;
+import com.plannet.others.GlobalVariables;
 import com.plannet.others.Utilities;
-import com.plannet.pages.ModelFragment;
 import com.plannet.pages.PagerAdapter;
 
 public class MyPlanActivity extends FragmentActivity {
@@ -50,7 +57,7 @@ public class MyPlanActivity extends FragmentActivity {
 		// 액션바 초기화
 		tabActionBar = getActionBar();
 		// 액션바와 드로어를 연결 시켜주는 토글
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.plannet_menu,
 				R.string.open_drawer_message, R.string.close_drawer_message);
 		drawerLayout.setDrawerListener(drawerToggle); // 드로어와 액션바 토글을 연결
 		tabActionBar.setDisplayHomeAsUpEnabled(true);
@@ -67,10 +74,13 @@ public class MyPlanActivity extends FragmentActivity {
 		pagerContainer.addView(pager);// LinearLayout의 자식으로 ViewPager를 넣어줌
 
 		pagerAdapter = new PagerAdapter(this, pager); // pagerAdapter 클래스에 있는 설명 참고
+		GlobalVariables.setPagerAdapter(pagerAdapter);
+
 		tabActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Now"), ModelFragment.class, 1); // 맨 마지막 것이 cid
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Later"), ModelFragment.class, 2);
-		pagerAdapter.addTab(tabActionBar.newTab().setText("Done"), ModelFragment.class, 3);
+		ArrayList<Category> categoryList = new CategoryDAO(this).select();
+		for (Category c : categoryList) {
+			pagerAdapter.addTab(tabActionBar.newTab().setText(c.getName()), c.getCid());
+		} // 탭 동적으로 추가
 
 		// ////////////////////////
 		// 여기서부터 버튼 리스너 추가
@@ -82,7 +92,7 @@ public class MyPlanActivity extends FragmentActivity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		// 주의! : 이 부분 매번 페이지 옮겨갈 때마다 뷰 생성되면서 실행됨
-		CurrentPageCidStore.setCurrentPageCid((Integer) tabActionBar.getTabAt(pager.getCurrentItem()).getTag());
+		GlobalVariables.setCurrentPageCid((Integer) tabActionBar.getTabAt(pager.getCurrentItem()).getTag());
 		// 페이지가 바뀔때마다 currentPageCid 정보를 갱신해준다
 	}
 
@@ -107,6 +117,31 @@ public class MyPlanActivity extends FragmentActivity {
 		if (drawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+
+		int id = item.getItemId();
+
+		switch (id) {
+		case R.id.createCategory:
+			CreateCategoryPopUp createPopup = new CreateCategoryPopUp();
+			createPopup.show(getSupportFragmentManager(), "CategoryPopup");
+			break;
+
+		case R.id.deleteCategory:
+			DeleteCategoryPopUp deletePopup = new DeleteCategoryPopUp();
+			deletePopup.show(getSupportFragmentManager(), "CategoryPopup");
+			break;
+
+		case R.id.editCategory:
+			EditCategoryPopUp editPopup = new EditCategoryPopUp();
+			editPopup.show(getSupportFragmentManager(), "CategoryPopup");
+			break;
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		return true;
 	}
 }

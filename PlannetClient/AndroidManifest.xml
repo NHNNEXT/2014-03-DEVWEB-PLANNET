@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/app_pic"
+        android:icon="@drawable/plannet_icon"
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme" >
         <activity
@@ -22,22 +22,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddPlanActivity" >
+        <activity android:name=".SignInActivity" >
         </activity>
-        <activity android:name=".EditPlanActivity" >
-        </activity>
-        <activity
-            android:name=".SignInActivity"
-            android:label="" >
-        </activity>
-        <activity
-            android:name=".SignUpActivity"
-            android:label="" >
+        <activity android:name=".SignUpActivity" >
         </activity>
         <activity
             android:name=".MyPlanActivity"
             android:label=""
-            android:logo="@drawable/logo" >
+            android:logo="@drawable/plannet_text" >
+        </activity>
+        <activity android:name=".AddPlanActivity" >
+        </activity>
+        <activity android:name=".EditPlanActivity" >
+        </activity>
+        <activity android:name=".SubplanActivity" >
+        </activity>
+        <activity android:name=".AddSubplanActivity" >
+        </activity>
+        <activity android:name=".EditSubplanActivity" >
+        </activity>
+        <activity android:name=".SubplanContentsActivity" >
         </activity>
     </application>
 

@@ -1,5 +1,7 @@
 ﻿package com.plannet.activity;
 
+import java.net.CookieHandler;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -17,7 +19,14 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		getActionBar().hide();
 		Utilities.moveToAnotherActivity(this, MyPlanActivity.class);
+
+		java.net.CookieManager cookieManager = new java.net.CookieManager();
+		CookieHandler.setDefault(cookieManager);
+
+		// TODO #2. 서버와 연결되지 않았을시 에러메시지 출력
+		// 테스트 연결 HttpTestCheck란거 하나 만들어서 항상 테스트하고 난뒤 서버에 요청 보내고 join하기
 
 		// ////////////////////////
 		// 여기서부터 uuid로 로그인, 저장된 것이 없거나 실패시 sign in으로 이동

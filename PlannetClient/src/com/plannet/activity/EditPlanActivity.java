@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.plannet.clientdb.PlanDAO;
 import com.plannet.http.HttpRequest;
-import com.plannet.others.CurrentPageCidStore;
+import com.plannet.others.GlobalVariables;
 import com.plannet.others.Utilities;
 
 public class EditPlanActivity extends Activity implements OnClickListener {
@@ -39,7 +39,7 @@ public class EditPlanActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		final int cid = CurrentPageCidStore.getCurrentPageCid();
+		final int cid = GlobalVariables.getCurrentPageCid();
 		final String title = titleEdit.getText().toString();
 		final String summary = summaryEdit.getText().toString();
 
@@ -58,6 +58,6 @@ public class EditPlanActivity extends Activity implements OnClickListener {
 			}
 		}.start();
 
-		onBackPressed(); // 뒤로 가기 버튼 누른 것과 같은 효과
+		Utilities.moveToAnotherActivity(this, MyPlanActivity.class);
 	}
 }

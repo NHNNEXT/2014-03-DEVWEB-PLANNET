@@ -6,19 +6,14 @@ import java.net.URL;
 import android.util.Log;
 
 import com.plannet.model.Plan;
+import com.plannet.model.Subplan;
 import com.plannet.model.User;
 import com.plannet.others.Utilities;
 
 public class HttpRequest {
 
-	// DataOutputStream writer = new DataOutputStream(conn.getOutputStream());
-	// writer.writeBytes(JSON);
-	// writer.flush();
-	// writer.close();
-	// conn.connect();
-
 	public static HttpURLConnection getConnection(String servletName) {
-		String servletURL = "http://10.73.39.159:8080/" + servletName;
+		String servletURL = "http://10.73.42.200:8080/" + servletName;
 
 		try {
 			URL url = new URL(servletURL);
@@ -103,7 +98,7 @@ public class HttpRequest {
 		return response;
 	}
 
-	public static String PushPlan(int cid, String title, String summary) {
+	public static String[] PushPlan(int cid, String title, String summary) {
 		HttpURLConnection conn = getConnection("PushPlan");
 
 		Plan plan = new Plan(cid, title, summary);
@@ -118,7 +113,47 @@ public class HttpRequest {
 			Log.e("PushPlanProxy : ", "Connection Error!");
 		}
 
-		String response = conn.getHeaderField("result");
+		String result = conn.getHeaderField("result");
+		String pid = conn.getHeaderField("pid");
+		String[] response = new String[] { result, pid };
+
 		return response;
+	}
+
+	public static String[] PushSubplan(int pid, String title, String summary, int percent) {
+		HttpURLConnection conn = getConnection("PushSubplan");
+
+		Subplan subplan = new Subplan(pid, title, summary, percent);
+		String subplanJson = Utilities.GsonConvertToString(subplan);
+		Utilities.setRequestBody(conn, subplanJson);
+
+		try {
+			conn.connect();
+			Log.e("PushSubplanProxy : ", "" + conn.getResponseCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("PushSubplanProxy : ", "Connection Error!");
+		}
+
+		String result = conn.getHeaderField("result");
+		String subpid = conn.getHeaderField("subpid");
+		String[] response = new String[] { result, subpid };
+
+		return response;
+	}
+
+	public static Plan[] PullPlan() {
+		HttpURLConnection conn = getConnection("PullPlan");
+
+		try {
+			conn.connect();
+			Log.e("PullPlanProxy : ", "" + conn.getResponseCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("PullPlanProxy : ", "Connection Error!");
+		}
+
+		Plan[] planList = Utilities.GsonConvertFromString(Utilities.getResponseBody(conn), Plan[].class);
+		return planList;
 	}
 }

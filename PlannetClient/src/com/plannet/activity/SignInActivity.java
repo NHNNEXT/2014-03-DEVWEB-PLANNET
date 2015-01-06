@@ -14,6 +14,8 @@ public class SignInActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in);
 
+		getActionBar().hide();
+
 		Button signInButton = (Button) findViewById(R.id.signInButton);
 		signInButton.setOnClickListener(new SignInOnClickListener(this, MyPlanActivity.class));
 		Utilities.addPortalToButton(findViewById(R.id.signUpPortalButton), this, SignUpActivity.class);

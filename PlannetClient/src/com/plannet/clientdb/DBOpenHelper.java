@@ -19,7 +19,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		db.execSQL(SQLStatements.createUserTable);
 		db.execSQL(SQLStatements.createCategoryTable);
 		db.execSQL(SQLStatements.createPlanTable);
+		db.execSQL(SQLStatements.createSubplanTable);
 		db.execSQL("INSERT INTO personal(uuid) VALUES('default');");
+		db.execSQL("INSERT INTO category VALUES(1,1,'NOW');");
+		db.execSQL("INSERT INTO category VALUES(2,1,'LATER');");
+		db.execSQL("INSERT INTO category VALUES(3,1,'DONE');");
 	}
 
 	@Override
