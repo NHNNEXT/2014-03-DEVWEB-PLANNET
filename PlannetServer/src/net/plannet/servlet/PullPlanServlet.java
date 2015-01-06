@@ -7,15 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.plannet.db.PlanDAO;
 import net.plannet.model.Plan;
-import net.plannet.model.User;
 import net.plannet.util.ErrorUtil;
 import net.plannet.util.GsonUtil;
 import net.plannet.util.RequestResult;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.reflect.TypeToken;
 
 @WebServlet("/PullPlan")
 public class PullPlanServlet extends HttpServlet {
@@ -26,11 +27,10 @@ public class PullPlanServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			//Server --> Client
-			User user = GsonUtil.getObjectFromRequest(req, User.class);
-			ArrayList<Plan> planList = new PlanDAO().pullAllPlans(user);
-			GsonUtil.writeObjectOnResponse(resp, planList);
-			logger.info("전체플랜 전송완료. User:{} 전송된 플랜:{}개",user.getEmail(), planList.size());
-			
+			int uid = (int)req.getSession().getAttribute("uid");
+			ArrayList<Plan> planList = new PlanDAO().pullPlan(uid);
+			GsonUtil.writeObjectOnResponse(resp, planList.toArray());
+			logger.info("전체플랜 전송완료. 전송된 플랜:{}개", planList.size());
 		} catch (Exception e) {
 			ErrorUtil.printError("PullPlanServlet Failed", e);
 		}

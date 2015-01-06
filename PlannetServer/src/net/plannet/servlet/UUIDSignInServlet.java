@@ -38,6 +38,7 @@ public class UUIDSignInServlet extends HttpServlet {
 				resp.setHeader("result", RequestResult.Success);
 				HttpSession session = req.getSession();
 				session.setAttribute(RequestResult.SESSION_USER_ID, userList.get(0).getUid());
+				System.out.println(session.getAttribute("uid"));
 				logger.info("UUIDSignIn이 성공하였습니다.");
 				// uuid expireDate update한다. (옵션)
 			} else {

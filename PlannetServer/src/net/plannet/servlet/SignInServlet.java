@@ -10,16 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.plannet.db.SignInDAO;
-import net.plannet.db.SignUpDAO;
 import net.plannet.model.User;
 import net.plannet.util.ErrorUtil;
 import net.plannet.util.GsonUtil;
 import net.plannet.util.RequestResult;
 import net.plannet.util.UUIDControl;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/SignIn")
 public class SignInServlet extends HttpServlet {

@@ -1,6 +1,7 @@
 package net.plannet.util;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,9 @@ public class GsonUtil {
 
 	public static void writeObjectOnResponse(HttpServletResponse resp,
 			Object obj) throws IOException {
+		DataOutputStream writer = new DataOutputStream(resp.getOutputStream());
 		String json = gson.toJson(obj);
-		resp.getWriter().write(json);
+		writer.writeUTF(json);
+		writer.close();
 	}
 }

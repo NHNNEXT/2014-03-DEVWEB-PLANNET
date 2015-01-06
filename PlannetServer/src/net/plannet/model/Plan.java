@@ -9,13 +9,15 @@ public class Plan {
 	private boolean iscomplete;
 	private boolean isprivate;
 	
+	public Plan() {
+	}
+	
 	public Plan(int uid, String title) {
 		this.uid = uid;
 		this.title = title;
 	}
 	
-	public Plan(int pid, int uid,int cid, String title, String summary, boolean isprivate, boolean iscomplete) {
-		this.pid = pid;
+	public Plan(int uid,int cid, String title, String summary, boolean isprivate, boolean iscomplete) {
 		this.uid = uid;
 		this.cid = cid;
 		this.title = title;
@@ -44,12 +46,39 @@ public class Plan {
 		return summary;
 	}
 
-	public boolean isIscomplete() {
+	public boolean getIscomplete() {
 		return iscomplete;
 	}
 
-	public boolean isIsprivate() {
+	public boolean getIsprivate() {
 		return isprivate;
 	}
-	
+
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public void setIscomplete(boolean iscomplete) {
+		this.iscomplete = iscomplete;
+	}
+
+	public void setIsprivate(boolean isprivate) {
+		this.isprivate = isprivate;
+	}
 }
